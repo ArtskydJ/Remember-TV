@@ -1,27 +1,21 @@
 {
-  "name": "electron-quick-start",
+  "name": "track-watched-tv-shows",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
+  "private": true,
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "repository": "https://github.com/ArtskydJ/track-watched-tv-shows",
+  "author": "ArtskydJ",
+  "license": "MIT",
   "devDependencies": {
-    "electron": "^4.0.1",
     "electron-debug": "^2.0.0",
     "electron-reloader": "^0.2.0"
   },
   "dependencies": {
+    "electron": "^4.0.1",
     "fs-readdir-recursive": "^1.1.0",
     "hyperscript": "^2.0.2"
   }
