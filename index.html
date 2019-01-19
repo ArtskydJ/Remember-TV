@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>RemembeTV</title>
+		<style type="text/css">
+			body {
+				font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
+				font-size: 14pt;
+				background-color: #333;
+				color: #ddd;
+			}
+			.list-item {
+				display: flex;
+				justify-content: space-between;
+				width: 100%;
+				box-sizing: border-box;
+				padding: 0.5em;
+				border-radius: 0.2em;
+				cursor: pointer;
+			}
+			.list-item:hover {
+				background-color: #444;
+				outline: 1px solid #222;
+			}
+			.icon {
+				display: inline-block;
+				padding-right: 0.5em;
+			}
+			.title {}
+			.title.file {
+				/*padding-left: 1em;*/
+			}
+		</style>
+	</head>
+	<body>
+		<h1 id="main-title">RemembeTV</h1>
+		<div id="list">Scanning... Please wait</div>
+
+		<script>
+			var fs = require('fs')
+			var path = require('path')
+			var h = require('hyperscript')
+			var videoExts = require('./video-extensions-list.js')
+
+			var files = []
+			setTimeout(() => {
+				files = readdir()
+				loadNode(files)
+			}, 1)
+
+			////////////////////////////// FILE SYSTEM //////////////////////////////
+
+			function readdir(dir) {
+				var rootNode = {
+					name: 'TV',
+					absPath: 'E:\\Video\\TV',
+					relPath: '\\',
+					parent: null
+				}
+				return readsubdir(rootNode)
+
+			}
+			function readsubdir(node) {
+				node.folders = []
+				node.files = []
+
+				var filesAndFolders = fs.readdirSync(node.absPath, { withFileTypes: true })
+				filesAndFolders.forEach(dirent => {
+					var child = {
+						name: dirent.name,
+						absPath: path.join(node.absPath, dirent.name),
+						relPath: path.join(node.relPath, dirent.name),
+						parent: node
+					}
+					child.prettyPath = child.relPath.slice(1).split(path.sep).join(' > ')
+
+					var ext = path.extname(child.name).slice(1)
+					if (dirent.isDirectory()) {
+						child.type = 'folder'
+						child.icon = '📁'
+						node.folders.push(child)
+						readsubdir(child)
+
+					} else if (videoExts.includes(ext)) {
+						child.type = 'file'
+						child.icon = '🎥'
+						node.files.push(child)
+					}
+				})
+				return node
+			}
+
+			////////////////////////////// DOM MANIPULATION //////////////////////////////
+			var mainTitle = document.getElementById('main-title')
+			var list = document.getElementById('list')
+
+			function addItem(item, onclick) {
+				var div = h('.list-item', { onclick }, [
+					h(`.title.${item.type}.${item.videoStr}`, [
+						h('span.icon', item.icon),
+						item.name
+					]),
+					h('.progress', '✓')
+				])
+				list.appendChild(div)
+			}
+			function addFolder(item) {
+				var onclick = function() {
+					loadNode(item)
+				}
+				addItem(item, onclick)
+			}
+			function addFile(item) {
+				var onclick = function() {
+					console.log('TODO OPEN VLC')
+				}
+				addItem(item, onclick)
+			}
+			function loadNode(node) {
+				list.innerHTML = ''
+				if (!node.parent) {
+					mainTitle.innerHTML = 'RememveTV'
+				} else {
+					mainTitle.innerHTML = node.prettyPath
+					addItem({
+						icon: '↩',
+						name: 'Go Back',
+						type: 'folder'
+					}, function () {
+						loadNode(node.parent)
+					})
+				}
+				node.folders.forEach(addFolder)
+				node.files.forEach(addFile)
+			}
+		</script>
+	</body>
+</html>
