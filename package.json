@@ -1,7 +1,7 @@
 {
   "name": "track-watched-tv-shows",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "An electron app to track which episodes you've watched, which are in progress ",
   "main": "main.js",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
   "dependencies": {
     "electron": "^4.0.1",
     "fs-readdir-recursive": "^1.1.0",
-    "hyperscript": "^2.0.2"
+    "hyperscript": "^2.0.2",
+    "opn": "^5.4.0"
   }
 }
