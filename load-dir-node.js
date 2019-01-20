@@ -1,16 +1,16 @@
 var h = require('hyperscript')
 var open = require('opn')
 
-var eleSubheading = document.getElementById('subheading')
+var eleTitle = document.getElementById('title')
 var eleList = document.getElementById('list')
 
 module.exports = function loadNode(node) {
 	window.scrollTo(0, 0)
 	eleList.innerHTML = ''
 	if (!node.parent) {
-		eleSubheading.innerHTML = 'TV Shows'
+		eleTitle.innerHTML = 'TV Shows'
 	} else {
-		eleSubheading.innerHTML = node.prettyPath
+		eleTitle.innerHTML = node.prettyPath
 		var item = {
 			icon: '↩',
 			name: 'Go Back',
