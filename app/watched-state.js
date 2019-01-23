@@ -19,7 +19,7 @@ module.exports = function watchedState(absPath) {
 	}
 
 	function get(relPath) {
-		console.log(relPath)
+		// console.log(relPath)
 		// var fullPath = path.join(absPath, relPath)
 		if (stateObj[relPath] === undefined) {
 			stateObj[relPath] = false

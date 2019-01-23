@@ -14,7 +14,7 @@ module.exports = function loadNode(node) {
 		var item = {
 			icon: '↩',
 			name: 'Go Back',
-			type: 'folder'
+			type: 'back'
 		}
 		var onclickBack = function () {
 			loadNode(node.parent)
@@ -41,17 +41,45 @@ module.exports = function loadNode(node) {
 	})
 }
 
-function addItem(eleList, item, onclick) {
-	var div = h('.list-item', { onclick }, [
-		h(`.title.${item.type}.${item.videoStr}`, [
+function addItem(eleList, item, onclick, onrightclick = () => {}) {
+	oncontextmenu = ev => {
+		ev.preventDefault()
+		onrightclick()
+		return false
+	}
+	var div = h('.list-item', { onclick, oncontextmenu }, [
+		h(`.title.${item.type}`, [
 			h('span.icon', item.icon),
 			item.name
 		]),
-		h('.progress', [
-			(item.watched === true ? '✓' :
-				(item.watched === false ? '✗' : '')),
-			// ' ≡'
-		])
+		// h('button', { onclick:function(){console.log('markWatched');return false} }, [ 'Mark Watched' ]),
+		{
+			folder: ()=> h('.progress', [ getWatchedChildren(item) + '/' + getTotalChildren(item) ]),
+			file: ()=>h(`.progress.icon.${ item.watched ? '' : 'not-' }watched`),
+			back: ()=>'',
+		}[item.type]()
 	])
+	// item.div = div
 	eleList.appendChild(div)
+}
+
+function getTotalChildren(item) {
+	var folderWatchCount = item.folders.map(function (folder) {
+		return getTotalChildren(folder)
+	}).reduce(sum, 0)
+	var fileWatchCount = item.files.length
+	return folderWatchCount + fileWatchCount
+}
+function getWatchedChildren(item) {
+	console.dir(item)
+	var folderWatchCount = item.folders.map(function (folder) {
+		return getWatchedChildren(folder)
+	}).reduce(sum, 0)
+	var fileWatchCount = item.files.map(function (file) {
+		return file.watched ? 1 : 0
+	}).reduce(sum, 0)
+	return folderWatchCount + fileWatchCount
+}
+function sum(memo, curr) {
+	return memo + curr
 }

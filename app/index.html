@@ -15,21 +15,35 @@
 				justify-content: space-between;
 				width: 100%;
 				box-sizing: border-box;
-				padding: 0.5em;
-				border-radius: 0.2em;
+				padding: 0.1em;
+				border-radius: 0.1em;
 				cursor: pointer;
 			}
 			.list-item:hover {
 				background-color: #444;
 				outline: 1px solid #222;
 			}
+			.progress, .icon {
+				padding: 0 0.5em;
+			}
+			.progress.watched::after {
+				content: '✓';
+				color: green;
+			}
+			.progress.not-watched::after {
+				content: '✗';
+				color: orange;
+			}
 			.icon {
 				display: inline-block;
-				padding: 0 0.5em;
-				width: 1em;
+				/*width: 1em;*/
 			}
 			.title {}
 			.title.file {
+				width: 100%;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 				/*padding-left: 1em;*/
 			}
 			#heading {
