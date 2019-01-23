@@ -16,33 +16,36 @@ module.exports = function readdir(absPath) {
 	return readsubdir(state, rootNode)
 }
 
-function readsubdir(state, node) {
-	node.folders = []
-	node.files = []
+function readsubdir(state, pnode) {
+	pnode.folders = []
+	pnode.files = []
 
-	var filesAndFolders = fs.readdirSync(node.absPath, { withFileTypes: true })
+	var filesAndFolders = fs.readdirSync(pnode.absPath, { withFileTypes: true })
 	filesAndFolders.forEach(dirent => {
-		var child = {
+		var cnode = {
 			name: dirent.name,
-			absPath: path.join(node.absPath, dirent.name),
-			relPath: path.join(node.relPath, dirent.name),
-			parent: node
+			absPath: path.join(pnode.absPath, dirent.name),
+			relPath: path.join(pnode.relPath, dirent.name),
+			parent: pnode
 		}
-		child.prettyPath = child.relPath.slice(1).split(path.sep).join(' — ')
+		cnode.prettyPath = cnode.relPath.slice(1).split(path.sep).join(' — ')
 
-		var ext = path.extname(child.name).slice(1)
+		var ext = path.extname(cnode.name).slice(1)
 		if (dirent.isDirectory()) {
-			child.type = 'folder'
-			child.icon = '📁'
-			node.folders.push(child)
-			readsubdir(state, child)
+			cnode.type = 'folder'
+			cnode.icon = '📁'
+			pnode.folders.push(cnode)
+			readsubdir(state, cnode)
 
 		} else if (videoExts.includes(ext)) {
-			child.type = 'file'
-			child.icon = '🎥'
-			child.watched = state.get(child.relPath)
-			node.files.push(child)
+			cnode.type = 'file'
+			cnode.icon = '🎥'
+			cnode.watched = {
+				get: ()=>state.get(cnode.relPath),
+				set: ()=>state.set(cnode.relPath),
+			}
+			pnode.files.push(cnode)
 		}
 	})
-	return node
+	return pnode
 }

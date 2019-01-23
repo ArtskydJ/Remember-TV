@@ -4,62 +4,64 @@ var open = require('opn')
 var eleTitle = document.getElementById('title')
 var eleList = document.getElementById('list')
 
-module.exports = function loadNode(node) {
+module.exports = function loadNode(pnode) {
 	window.scrollTo(0, 0)
 	eleList.innerHTML = ''
-	if (!node.parent) {
+	if (!pnode.parent) {
 		eleTitle.innerHTML = 'TV Shows'
 	} else {
-		eleTitle.innerHTML = node.prettyPath
+		eleTitle.innerHTML = pnode.prettyPath
 		var item = {
 			icon: '↩',
 			name: 'Go Back',
 			type: 'back'
 		}
 		var onclickBack = function () {
-			loadNode(node.parent)
+			loadNode(pnode.parent)
 		}
 		addItem(eleList, item, onclickBack)
 	}
-	node.folders.forEach(function addFolder(item) {
+	pnode.folders.forEach(function addFolder(item) {
 		var onclickFolder = function () {
 			loadNode(item)
 		}
 		addItem(eleList, item, onclickFolder)
 	})
-	node.files.forEach(function addFile(item) {
-		var onclickFile = function () {
-			item.watched = true // I don't think this will change the icon
+	pnode.files.forEach(function addFile(cnode) {
+		var onclickFile = function (ev) {
+			// I don't like this code:
+			ev.target.parentNode.lastChild.classList.remove('not-watched')
+			ev.target.parentNode.lastChild.classList.add('watched')
+
+			cnode.watched.set(true) // I don't think this will change the icon
 			document.body.classList.add('modal-open')
-			open(item.absPath).then(function () {
-				// If, instead of a modal, I clear out the whole page, then when I
-				// re-create the page, then I can make it with the correct checks/ex's
+			open(cnode.absPath).then(function () {
 				document.body.classList.remove('modal-open')
 			})
 		}
-		addItem(eleList, item, onclickFile)
+		addItem(eleList, cnode, onclickFile)
 	})
 }
 
 function addItem(eleList, item, onclick, onrightclick = () => {}) {
 	oncontextmenu = ev => {
 		ev.preventDefault()
-		onrightclick()
+		onrightclick(ev)
 		return false
 	}
 	var div = h('.list-item', { onclick, oncontextmenu }, [
-		h(`.title.${item.type}`, [
 			h('span.icon', item.icon),
+		h(`.title.${item.type}`, [
 			item.name
 		]),
 		// h('button', { onclick:function(){console.log('markWatched');return false} }, [ 'Mark Watched' ]),
 		{
 			folder: ()=> h('.progress', [ getWatchedChildren(item) + '/' + getTotalChildren(item) ]),
-			file: ()=>h(`.progress.icon.${ item.watched ? '' : 'not-' }watched`),
+			file: ()=>h(`.progress.icon.${ item.watched.get() ? '' : 'not-' }watched`),
 			back: ()=>'',
 		}[item.type]()
 	])
-	// item.div = div
+	item.ele = div
 	eleList.appendChild(div)
 }
 
@@ -71,12 +73,11 @@ function getTotalChildren(item) {
 	return folderWatchCount + fileWatchCount
 }
 function getWatchedChildren(item) {
-	console.dir(item)
 	var folderWatchCount = item.folders.map(function (folder) {
 		return getWatchedChildren(folder)
 	}).reduce(sum, 0)
 	var fileWatchCount = item.files.map(function (file) {
-		return file.watched ? 1 : 0
+		return file.watched.get() ? 1 : 0
 	}).reduce(sum, 0)
 	return folderWatchCount + fileWatchCount
 }

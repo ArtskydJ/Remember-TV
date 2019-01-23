@@ -15,7 +15,7 @@ module.exports = function watchedState(absPath) {
 		get,
 		set,
 		save,
-		setFromFileObj,
+		//setFromFileObj,
 	}
 
 	function get(relPath) {
@@ -27,26 +27,26 @@ module.exports = function watchedState(absPath) {
 		return stateObj[relPath]
 	}
 
-	function set(relPath) { // this funciton is not used currently
+	function set(relPath) {
 		stateObj[relPath] = true
 	}
 
-	function setFromFileObj(files) {
-		// do stuff
+/*
+	function setFromFileObj(item) {
+		var state = {}
+		recurse(item)
+
+		function recurse(item) {
+			item.folders.forEach(recurse)
+			item.files.forEach(function (file) {
+				state[file.relPath] = file.watched
+			})
+		}
 	}
+*/
 
 	function save() {
 		fs.writeFileSync(fullJsonPath, JSON.stringify(stateObj, null, '\t'))
 		return stateObj
 	}
 }
-
-
-// TODO this needs to read from a file
-// Easiest would be to read the absPath or relPath
-// The savefile could be like this:
-// {
-//     "/Andromeda/Season 1/S01E12.The.Thingy.avi": false,
-//     "/Andromeda/Season 1/S01E13.The.Whatever.avi": true,
-//     ...
-// }
