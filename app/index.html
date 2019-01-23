@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>RemembeTV</title>
+		<title>Remember TV</title>
 		<style type="text/css">
 			body {
 				font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
@@ -25,7 +25,8 @@
 			}
 			.icon {
 				display: inline-block;
-				padding-right: 0.5em;
+				padding: 0 0.5em;
+				width: 1em;
 			}
 			.title {}
 			.title.file {
@@ -71,7 +72,7 @@
 
 			setTimeout(() => {
 				// Let the UI load, then run the blocking FS code
-				var files = readdir('E:\\Video\\TV')
+				files = readdir('E:\\Video\\TV')
 				loadDirNode(files)
 			}, 1)
 		</script>

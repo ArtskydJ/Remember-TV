@@ -29,8 +29,11 @@ module.exports = function loadNode(node) {
 	})
 	node.files.forEach(function addFile(item) {
 		var onclickFile = function () {
+			item.watched = true // I don't think this will change the icon
 			document.body.classList.add('modal-open')
 			open(item.absPath).then(function () {
+				// If, instead of a modal, I clear out the whole page, then when I
+				// re-create the page, then I can make it with the correct checks/ex's
 				document.body.classList.remove('modal-open')
 			})
 		}
@@ -44,7 +47,11 @@ function addItem(eleList, item, onclick) {
 			h('span.icon', item.icon),
 			item.name
 		]),
-		h('.progress', '✓')
+		h('.progress', [
+			(item.watched === true ? '✓' :
+				(item.watched === false ? '✗' : '')),
+			// ' ≡'
+		])
 	])
 	eleList.appendChild(div)
 }
