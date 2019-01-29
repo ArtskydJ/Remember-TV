@@ -42,7 +42,7 @@ function readsubdir(state, pnode) {
 			cnode.icon = '🎥'
 			cnode.watched = {
 				get: ()=>state.get(cnode.relPath),
-				set: ()=>state.set(cnode.relPath),
+				set: v=>state.set(cnode.relPath, v),
 			}
 			pnode.files.push(cnode)
 		}

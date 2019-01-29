@@ -14,7 +14,6 @@ module.exports = function watchedState(absPath) {
 	return {
 		get,
 		set,
-		save,
 		//setFromFileObj,
 	}
 
@@ -27,8 +26,9 @@ module.exports = function watchedState(absPath) {
 		return stateObj[relPath]
 	}
 
-	function set(relPath) {
-		stateObj[relPath] = true
+	function set(relPath, value) {
+		stateObj[relPath] = value
+		save()
 	}
 
 /*

@@ -28,30 +28,38 @@ module.exports = function loadNode(pnode) {
 		addItem(eleList, item, onclickFolder)
 	})
 	pnode.files.forEach(function addFile(cnode) {
-		var onclickFile = function (ev) {
-			// I don't like this code:
-			ev.target.parentNode.lastChild.classList.remove('not-watched')
-			ev.target.parentNode.lastChild.classList.add('watched')
+		function setWatched(ev, watched) {
+			// I don't like this element targeting code:
+			ev.target.parentNode.lastChild.classList.remove(watched ? 'not-watched' : 'watched')
+			ev.target.parentNode.lastChild.classList.add(watched ? 'watched' : 'not-watched')
 
-			cnode.watched.set(true) // I don't think this will change the icon
+			cnode.watched.set(watched)
+		}
+		var onclickFile = function (ev) {
+			setWatched(ev, true)
+
 			document.body.classList.add('modal-open')
 			open(cnode.absPath).then(function () {
 				document.body.classList.remove('modal-open')
 			})
 		}
-		addItem(eleList, cnode, onclickFile)
+		var onrightclickFile = function (ev) {
+			setWatched(ev, !cnode.watched.get())
+		}
+		addItem(eleList, cnode, onclickFile, onrightclickFile)
 	})
 }
 
 function addItem(eleList, item, onclick, onrightclick = () => {}) {
 	oncontextmenu = ev => {
 		ev.preventDefault()
+		ev.stopPropagation() // ?
 		onrightclick(ev)
 		return false
 	}
 	var div = h('.list-item', { onclick, oncontextmenu }, [
-			h('span.icon', item.icon),
-		h(`.title.${item.type}`, [
+		h('span.icon', item.icon),
+		h(`.name.${item.type}`, [
 			item.name
 		]),
 		// h('button', { onclick:function(){console.log('markWatched');return false} }, [ 'Mark Watched' ]),
