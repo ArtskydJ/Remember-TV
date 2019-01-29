@@ -6,14 +6,15 @@ module.exports = function watchedState(absPath) {
 	var stateObj = null
 	try {
 		stateObj = JSON.parse(fs.readFileSync(fullJsonPath, 'utf-8'))
-	} catch(_) {
-		console.log(_.message)
+	} catch(err) {
+		console.log(err.message)
 		stateObj = {}
 	}
 
 	return {
 		get,
 		set,
+		save
 		//setFromFileObj,
 	}
 
@@ -28,7 +29,6 @@ module.exports = function watchedState(absPath) {
 
 	function set(relPath, value) {
 		stateObj[relPath] = value
-		save()
 	}
 
 /*

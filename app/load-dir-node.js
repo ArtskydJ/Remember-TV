@@ -25,7 +25,26 @@ module.exports = function loadNode(state, pnode) {
 		var onclickFolder = function () {
 			loadNode(state, item)
 		}
-		addItem(eleList, item, state, onclickFolder)
+		var onrightclickFolder = function (ev) {
+			var total = getTotalChildren(item)
+			var watched = getWatchedChildren(state, item)
+			var watchedAll = total === watched
+			var message = `Mark all video files as ${watchedAll ? 'un' : ''}watched?`
+			if (confirm(message)) {
+				setChildrenWatched(state, item, !watchedAll)
+				state.save()
+
+				// I don't like this element targeting code:
+				ev.target.parentNode.lastChild.innerHTML = `${watchedAll ? '0' : total}/${total}`
+				// there's a bug where it will sometimes overwrite the last folder's item with XX/XX
+				// position your mouse as close to an item's border as you can. You'll end up creating
+				// a click event on the .list-item, instead of one of the .list-item's children as expected
+
+				// this bug can be replicated on the file level as well, but it is not as obvious.
+				// it can feel like the right click just didn't happen, when replicated on the file level
+			}
+		}
+		addItem(eleList, item, state, onclickFolder, onrightclickFolder)
 	})
 	pnode.files.forEach(function addFile(cnode) {
 		function setWatched(ev, newIsWatched) {
@@ -34,6 +53,7 @@ module.exports = function loadNode(state, pnode) {
 			ev.target.parentNode.lastChild.classList.add(newIsWatched ? 'watched' : 'not-watched')
 
 			state.set(cnode.relPath, newIsWatched)
+			state.save()
 		}
 		var onclickFile = function (ev) {
 			setWatched(ev, true)
@@ -91,4 +111,12 @@ function getWatchedChildren(state, node) {
 }
 function sum(memo, curr) {
 	return memo + curr
+}
+function setChildrenWatched(state, node, newIsWatched) {
+	node.folders.forEach(function (cnode) {
+		setChildrenWatched(state, cnode)
+	})
+	node.files.forEach(function (cnode) {
+		state.set(cnode.relPath, newIsWatched)
+	})
 }
