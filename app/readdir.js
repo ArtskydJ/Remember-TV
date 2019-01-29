@@ -1,22 +1,18 @@
 var fs = require('fs')
 var path = require('path')
 var videoExts = require('./video-extensions-list.js')
-var watchedState = require('./watched-state.js')
-
-// it should load whether a thing is "watched" as it loads the file...
 
 module.exports = function readdir(absPath) {
-	var state = watchedState(absPath)
 	var rootNode = {
 		name: path.basename(absPath),
 		absPath,
 		relPath: '\\',
 		parent: null
 	}
-	return readsubdir(state, rootNode)
+	return readsubdir(rootNode)
 }
 
-function readsubdir(state, pnode) {
+function readsubdir(pnode) {
 	pnode.folders = []
 	pnode.files = []
 
@@ -35,15 +31,11 @@ function readsubdir(state, pnode) {
 			cnode.type = 'folder'
 			cnode.icon = '📁'
 			pnode.folders.push(cnode)
-			readsubdir(state, cnode)
+			readsubdir(cnode)
 
 		} else if (videoExts.includes(ext)) {
 			cnode.type = 'file'
 			cnode.icon = '🎥'
-			cnode.watched = {
-				get: ()=>state.get(cnode.relPath),
-				set: v=>state.set(cnode.relPath, v),
-			}
 			pnode.files.push(cnode)
 		}
 	})

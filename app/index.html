@@ -84,13 +84,16 @@
 		</div>
 
 		<script>
-			var readdir = require('./readdir.js')
-			var loadDirNode = require('./load-dir-node.js')
+			const readdir = require('./readdir.js')
+			const loadDirNode = require('./load-dir-node.js')
+			const watchedState = require('./watched-state.js')
 
 			setTimeout(() => {
 				// Let the UI load, then run the blocking FS code
-				files = readdir('E:\\Video\\TV')
-				loadDirNode(files)
+				const absPath = 'E:\\Video\\TV'
+				const files = readdir(absPath)
+				const state = watchedState(absPath)
+				loadDirNode(state, files)
 			}, 1)
 		</script>
 	</body>
