@@ -11,84 +11,75 @@ module.exports = function loadNode(state, pnode) {
 		eleTitle.innerHTML = 'TV Shows'
 	} else {
 		eleTitle.innerHTML = pnode.prettyPath
-		var item = {
-			icon: '↩',
-			name: 'Go Back',
-			type: 'back'
-		}
-		var onclickBack = function () {
-			loadNode(state, pnode.parent)
-		}
-		addItem(eleList, item, null, onclickBack)
+		addListItem({
+			cnode: { icon: '↩', name: 'Go Back', type: 'back' },
+			onleftclick: function () { loadNode(state, pnode.parent) }
+		})
 	}
-	pnode.folders.forEach(function addFolder(item) {
-		var onclickFolder = function () {
-			loadNode(state, item)
-		}
-		var onrightclickFolder = function (ev, listItem) {
-			var total = getTotalChildren(item)
-			var watched = getWatchedChildren(state, item)
-			var watchedAll = total === watched
-			var message = `Mark all video files as ${watchedAll ? 'un' : ''}watched?`
-			if (confirm(message)) {
-				setChildrenWatched(state, item, !watchedAll)
-				state.save()
+	pnode.folders.forEach(function addFolder(cnode) {
+		addListItem({ cnode, state,
+			onleftclick: function (eleListItem) { loadNode(state, cnode) },
+			onrightclick: function (eleListItem) {
+				var total = getTotalChildren(cnode)
+				var watched = getWatchedChildren(state, cnode)
+				var watchedAll = total === watched
+				var message = `Mark all video files as ${watchedAll ? 'un' : ''}watched?`
+				if (confirm(message)) {
+					setChildrenWatched(state, cnode, !watchedAll)
+					state.save()
 
-				listItem.lastChild.innerHTML = `${watchedAll ? '0' : total}/${total}`
+					eleListItem.lastChild.innerHTML = `${watchedAll ? '0' : total}/${total}`
+				}
 			}
-		}
-		addItem(eleList, item, state, onclickFolder, onrightclickFolder)
+		})
 	})
 	pnode.files.forEach(function addFile(cnode) {
-		function setWatched(ev, listItem, newIsWatched) {
-			listItem.lastChild.classList.remove(newIsWatched ? 'not-watched' : 'watched')
-			listItem.lastChild.classList.add(newIsWatched ? 'watched' : 'not-watched')
+		function setWatched(eleListItem, newIsWatched) {
+			eleListItem.lastChild.classList[newIsWatched ? 'add' : 'remove']('watched')
 
 			state.set(cnode.relPath, newIsWatched)
 			state.save()
 		}
-		var onclickFile = function (ev, listItem) {
-			setWatched(ev, listItem, true)
 
-			document.body.classList.add('modal-open')
-			open(cnode.absPath).then(function () {
-				document.body.classList.remove('modal-open')
-			})
-		}
-		var onrightclickFile = function (ev, listItem) {
-			var currentIsWatched = state.get(cnode.relPath)
-			setWatched(ev, listItem, !currentIsWatched)
-		}
-		addItem(eleList, cnode, state, onclickFile, onrightclickFile)
+		addListItem({ cnode, state,
+			onleftclick: function (eleListItem) {
+				setWatched(eleListItem, true)
+
+				document.body.classList.add('modal-open')
+				open(cnode.absPath).then(function () {
+					document.body.classList.remove('modal-open')
+				})
+			},
+			onrightclick: function (eleListItem) {
+				setWatched(eleListItem, !state.get(cnode.relPath))
+			}
+		})
 	})
 }
 
-function addItem(eleList, node, state, onleftclick, onrightclick = () => {}) {
-	onclick = ev => {
-		ev.preventDefault()
-		ev.stopPropagation()
-		onleftclick(ev, div)
-		return false
+function addListItem({ cnode, state, onleftclick, onrightclick }) {
+	function eventWrapper(eventHandler) {
+		return function evhw(ev) {
+			ev.preventDefault()
+			ev.stopPropagation()
+			eventHandler(div)
+			return false
+		}
 	}
-	oncontextmenu = ev => {
-		ev.preventDefault()
-		ev.stopPropagation()
-		onrightclick(ev, div)
-		return false
-	}
-	var div = h('.list-item', { onclick, oncontextmenu }, [
-		h('span.icon', node.icon),
-		h(`.name.${node.type}`, [
-			node.name
-		]),
-		// h('button', { onclick:function(){console.log('markWatched');return false} }, [ 'Mark Watched' ]),
+
+	var div = h(`.list-item.${cnode.type}`, {
+		onclick: eventWrapper(onleftclick),
+		oncontextmenu: eventWrapper(onrightclick || (a=>{}))
+	}, [
+		h('span.icon', cnode.icon),
+		h('.name', [ cnode.name ]),
+		// h('button', { onclick:()=>{ console.log('markWatched') } }, [ 'Mark Watched' ]),
 		{
-			folder: ()=> h('.progress', [ getWatchedChildren(state, node) + '/' + getTotalChildren(node) ]),
-			file: ()=>h(`.progress.icon.${ state.get(node.relPath) ? '' : 'not-' }watched`),
+			folder: ()=> h('.progress', [ getWatchedChildren(state, cnode) + '/' + getTotalChildren(cnode) ]),
+			file: ()=>h(`.progress.icon${ state.get(cnode.relPath) ? '.watched' : '' }`),
 			back: ()=>'',
-		}[node.type]()
+		}[cnode.type]()
 	])
-	node.ele = div
 	eleList.appendChild(div)
 }
 

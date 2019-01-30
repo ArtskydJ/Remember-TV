@@ -29,13 +29,13 @@
 			.progress, .icon {
 				padding: 0 0.5em;
 			}
-			.progress.watched::after {
-				content: '✓';
-				color: green;
-			}
-			.progress.not-watched::after {
+			.file .progress::after {
 				content: '✗';
 				color: orange;
+			}
+			.file .progress.watched::after {
+				content: '✓';
+				color: green;
 			}
 			.icon {
 				display: inline-block;
@@ -44,7 +44,7 @@
 				text-align:left;
 				width: 100%;
 			}
-			.name.file {
+			.file .name {
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
