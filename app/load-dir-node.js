@@ -25,7 +25,7 @@ module.exports = function loadNode(state, pnode) {
 		var onclickFolder = function () {
 			loadNode(state, item)
 		}
-		var onrightclickFolder = function (ev) {
+		var onrightclickFolder = function (ev, listItem) {
 			var total = getTotalChildren(item)
 			var watched = getWatchedChildren(state, item)
 			var watchedAll = total === watched
@@ -34,47 +34,46 @@ module.exports = function loadNode(state, pnode) {
 				setChildrenWatched(state, item, !watchedAll)
 				state.save()
 
-				// I don't like this element targeting code:
-				ev.target.parentNode.lastChild.innerHTML = `${watchedAll ? '0' : total}/${total}`
-				// there's a bug where it will sometimes overwrite the last folder's item with XX/XX
-				// position your mouse as close to an item's border as you can. You'll end up creating
-				// a click event on the .list-item, instead of one of the .list-item's children as expected
-
-				// this bug can be replicated on the file level as well, but it is not as obvious.
-				// it can feel like the right click just didn't happen, when replicated on the file level
+				listItem.lastChild.innerHTML = `${watchedAll ? '0' : total}/${total}`
 			}
 		}
 		addItem(eleList, item, state, onclickFolder, onrightclickFolder)
 	})
 	pnode.files.forEach(function addFile(cnode) {
-		function setWatched(ev, newIsWatched) {
-			// I don't like this element targeting code:
-			ev.target.parentNode.lastChild.classList.remove(newIsWatched ? 'not-watched' : 'watched')
-			ev.target.parentNode.lastChild.classList.add(newIsWatched ? 'watched' : 'not-watched')
+		function setWatched(ev, listItem, newIsWatched) {
+			listItem.lastChild.classList.remove(newIsWatched ? 'not-watched' : 'watched')
+			listItem.lastChild.classList.add(newIsWatched ? 'watched' : 'not-watched')
 
 			state.set(cnode.relPath, newIsWatched)
 			state.save()
 		}
-		var onclickFile = function (ev) {
-			setWatched(ev, true)
+		var onclickFile = function (ev, listItem) {
+			setWatched(ev, listItem, true)
 
 			document.body.classList.add('modal-open')
 			open(cnode.absPath).then(function () {
 				document.body.classList.remove('modal-open')
 			})
 		}
-		var onrightclickFile = function (ev) {
-			setWatched(ev, !state.get(cnode.relPath))
+		var onrightclickFile = function (ev, listItem) {
+			var currentIsWatched = state.get(cnode.relPath)
+			setWatched(ev, listItem, !currentIsWatched)
 		}
 		addItem(eleList, cnode, state, onclickFile, onrightclickFile)
 	})
 }
 
-function addItem(eleList, node, state, onclick, onrightclick = () => {}) {
+function addItem(eleList, node, state, onleftclick, onrightclick = () => {}) {
+	onclick = ev => {
+		ev.preventDefault()
+		ev.stopPropagation()
+		onleftclick(ev, div)
+		return false
+	}
 	oncontextmenu = ev => {
 		ev.preventDefault()
 		ev.stopPropagation()
-		onrightclick(ev)
+		onrightclick(ev, div)
 		return false
 	}
 	var div = h('.list-item', { onclick, oncontextmenu }, [

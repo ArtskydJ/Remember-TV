@@ -1,6 +1,5 @@
 # 1.0.0
 
-- Fix the border clicking bug (notes in load-dir-node.js:40)
 - Then release a MVP (min viable prod)
 - Then make screenshots, etc, and add them to the readme. Put screenshots in /screenshots (make that folder)
 - Make some sort of really basic input (maybe `prompt('Video directory', 'C:\\Users\\User\\Video')`)
