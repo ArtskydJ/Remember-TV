@@ -3,7 +3,6 @@ const {app, BrowserWindow} = require('electron')
 
 try {
 	// the try catch is needed to avoid "Cannot find module" error in production
-	require('electron-debug')()
 	require('electron-reloader')(module);
 } catch (err) {}
 
@@ -23,7 +22,7 @@ function createWindow () {
 	mainWindow.loadFile('app/index.html')
 
 	// Open the DevTools.
-	// mainWindow.webContents.openDevTools()
+	mainWindow.webContents.openDevTools()
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function () {
