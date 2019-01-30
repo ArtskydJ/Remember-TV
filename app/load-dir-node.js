@@ -114,7 +114,7 @@ function sum(memo, curr) {
 }
 function setChildrenWatched(state, node, newIsWatched) {
 	node.folders.forEach(function (cnode) {
-		setChildrenWatched(state, cnode)
+		setChildrenWatched(state, cnode, newIsWatched)
 	})
 	node.files.forEach(function (cnode) {
 		state.set(cnode.relPath, newIsWatched)
