@@ -2,14 +2,8 @@
 
 
 - Then release a MVP (min viable prod)
-- Then make screenshots, etc, and add them to the readme. Put screenshots in /screenshots (make that folder)
 
 # 1.1.0
 
 - Add button to modal to close VLC
-- Make a preferences pane
-	- Directory input, as well as a browse for directory button
-	- IDK what other preferences I'll have there. Maybe have an About section, with a link to my website
-	- Donate button there too haha don't actually do this
-	- lol
-
+- Color code the xxx/yyy progress text, to show if completed, in progress, or watched
