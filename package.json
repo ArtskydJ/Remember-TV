@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "electron": "^4.0.1",
+    "electron-store": "^2.0.0",
     "hyperscript": "^2.0.2",
     "opn": "^5.4.0"
   }

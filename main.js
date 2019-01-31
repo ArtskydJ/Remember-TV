@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, dialog} = require('electron')
 
 try {
 	// the try catch is needed to avoid "Cannot find module" error in production
@@ -57,3 +57,9 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+exports.selectDirectory = function() {
+	return dialog.showOpenDialog(mainWindow, {
+		properties: ['openDirectory']
+	})
+}

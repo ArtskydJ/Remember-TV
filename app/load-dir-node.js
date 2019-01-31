@@ -37,7 +37,7 @@ module.exports = function loadNode(state, pnode) {
 		function setWatched(eleListItem, newIsWatched) {
 			eleListItem.lastChild.classList[newIsWatched ? 'add' : 'remove']('watched')
 
-			state.set(cnode.relPath, newIsWatched)
+			state.set(cnode, newIsWatched)
 			state.save()
 		}
 
@@ -51,7 +51,7 @@ module.exports = function loadNode(state, pnode) {
 				})
 			},
 			onrightclick: function (eleListItem) {
-				setWatched(eleListItem, !state.get(cnode.relPath))
+				setWatched(eleListItem, !state.get(cnode))
 			}
 		})
 	})
@@ -76,7 +76,7 @@ function addListItem({ cnode, state, onleftclick, onrightclick }) {
 		// h('button', { onclick:()=>{ console.log('markWatched') } }, [ 'Mark Watched' ]),
 		{
 			folder: ()=> h('.progress', [ getWatchedChildren(state, cnode) + '/' + getTotalChildren(cnode) ]),
-			file: ()=>h(`.progress.icon${ state.get(cnode.relPath) ? '.watched' : '' }`),
+			file: ()=>h(`.progress.icon${ state.get(cnode) ? '.watched' : '' }`),
 			back: ()=>'',
 		}[cnode.type]()
 	])
@@ -95,7 +95,7 @@ function getWatchedChildren(state, node) {
 		return getWatchedChildren(state, folder)
 	}).reduce(sum, 0)
 	var fileWatchCount = node.files.map(function (file) {
-		return Number(state.get(file.relPath))
+		return Number(state.get(file))
 	}).reduce(sum, 0)
 	return folderWatchCount + fileWatchCount
 }
@@ -107,6 +107,6 @@ function setChildrenWatched(state, node, newIsWatched) {
 		setChildrenWatched(state, cnode, newIsWatched)
 	})
 	node.files.forEach(function (cnode) {
-		state.set(cnode.relPath, newIsWatched)
+		state.set(cnode, newIsWatched)
 	})
 }

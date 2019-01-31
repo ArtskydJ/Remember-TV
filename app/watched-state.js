@@ -1,15 +1,5 @@
-var fs = require('fs')
-var path = require('path')
-
-module.exports = function watchedState(absPath) {
-	var fullJsonPath = path.join(absPath, '.remembertv.json')
-	var stateObj = null
-	try {
-		stateObj = JSON.parse(fs.readFileSync(fullJsonPath, 'utf-8'))
-	} catch(err) {
-		console.log(err.message)
-		stateObj = {}
-	}
+module.exports = function watchedState(store) {
+	var stateObj = store.get('stateObj', {})
 
 	return {
 		get,
@@ -18,35 +8,19 @@ module.exports = function watchedState(absPath) {
 		//setFromFileObj,
 	}
 
-	function get(relPath) {
-		// console.log(relPath)
-		// var fullPath = path.join(absPath, relPath)
-		if (stateObj[relPath] === undefined) {
-			stateObj[relPath] = false
+	function get(node) {
+		if (stateObj[node.absPath] === undefined) {
+			stateObj[node.absPath] = false
 		}
-		return stateObj[relPath]
+		return stateObj[node.absPath]
 	}
 
-	function set(relPath, value) {
-		stateObj[relPath] = value
+	function set(node, value) {
+		stateObj[node.absPath] = value
 	}
-
-/*
-	function setFromFileObj(item) {
-		var state = {}
-		recurse(item)
-
-		function recurse(item) {
-			item.folders.forEach(recurse)
-			item.files.forEach(function (file) {
-				state[file.relPath] = file.watched
-			})
-		}
-	}
-*/
 
 	function save() {
-		fs.writeFileSync(fullJsonPath, JSON.stringify(stateObj, null, '\t'))
+		store.set('stateObj', stateObj)
 		return stateObj
 	}
 }

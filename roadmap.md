@@ -1,8 +1,8 @@
 # 1.0.0
 
+
 - Then release a MVP (min viable prod)
 - Then make screenshots, etc, and add them to the readme. Put screenshots in /screenshots (make that folder)
-- Make some sort of really basic input (maybe `prompt('Video directory', 'C:\\Users\\User\\Video')`)
 
 # 1.1.0
 

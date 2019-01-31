@@ -10,6 +10,9 @@
 				background-color: #333;
 				color: #ddd;
 			}
+			#list {
+				margin-top: 1em;
+			}
 			.list-item {
 				display: flex;
 				justify-content: space-between;
@@ -73,28 +76,75 @@
 			#circle-slash-icon {
 				font-size: 100px;
 			}
+			#inputdir {
+				display: none;
+			}
+			button {
+				cursor: pointer;
+				padding: 0.5em 1em;
+				background-color: #333;
+				border-radius: 0.3em;
+				border: 2px solid #111;
+				color: #888;
+				font-size: 1em;
+				font-weight: bold;
+				outline: none;
+			}
+			button:hover {
+				background-color: #444;
+				color: #eee;
+			}
 		</style>
 	</head>
 	<body>
 		<h2 id="title">TV Shows</h2>
+
+		<button id="browse">Browse</button>
+		<span id="selecteddir"></span>
 		<div id="list">Scanning... Please wait</div>
+
 		<div id="block-input">
 			<div id="circle-slash-icon">⊘</div>
 			Wait until the media player is closed
 		</div>
 
-		<script>
+		<script type="text/javascript">
+			const Store = require('electron-store')
 			const readdir = require('./readdir.js')
 			const loadDirNode = require('./load-dir-node.js')
 			const watchedState = require('./watched-state.js')
 
-			setTimeout(() => {
-				// Let the UI load, then run the blocking FS code
-				const absPath = 'E:\\Video\\TV'
-				const files = readdir(absPath)
-				const state = watchedState(absPath)
-				loadDirNode(state, files)
-			}, 1)
+			const store = new Store()
+			// store.openInEditor()
+			load()
+
+			const electron = require('electron')
+			const mainProcess = electron.remote.require('./main')
+			byId('browse').addEventListener('click', () => {
+				var selectResults = mainProcess.selectDirectory()
+				if (selectResults.length) {
+					store.set('absPath', selectResults[0])
+					load()
+				}
+			})
+
+
+			function load(){
+				var absPath = store.get('absPath')
+				byId('selecteddir').innerHTML = absPath || 'No folder selected'
+				if (!absPath) return false
+
+				setTimeout(() => {
+					// Let the UI load, then run the blocking FS code
+					const files = readdir(absPath)
+					const state = watchedState(store)
+					loadDirNode(state, files)
+				}, 1)
+			}
+
+			function byId(id) {
+				return document.getElementById(id)
+			}
 		</script>
 	</body>
 </html>
