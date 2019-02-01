@@ -6,6 +6,7 @@
 
 # Future
 
+- Complete keyboard navigation
 - Get rid of top menu bar. Or add controls to it? (e.g. mark all in current dir as watched/unwatched, and change dir)
 - Add button to modal to close VLC
 - Show "pro-tips" in the modal
