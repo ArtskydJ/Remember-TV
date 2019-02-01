@@ -1,20 +1,24 @@
 {
   "name": "track-watched-tv-shows",
+  "productName": "Remember TV",
   "version": "1.0.0",
   "description": "An electron app to track which episodes you've watched, which are in progress ",
   "main": "main.js",
   "private": true,
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager ./ --overwrite --out=./dist --platform=darwin,linux,win32 --arch=ia32,x64 --icon=icon/icon"
   },
   "repository": "https://github.com/ArtskydJ/track-watched-tv-shows",
   "author": "ArtskydJ",
   "license": "MIT",
   "devDependencies": {
+    "electron": "^4.0.1",
+    "electron-packager": "^13.0.1",
     "electron-reloader": "^0.2.0"
   },
   "dependencies": {
-    "electron": "^4.0.1",
+    "electron-is-dev": "^1.0.1",
     "electron-store": "^2.0.0",
     "hyperscript": "^2.0.2",
     "opn": "^5.4.0"

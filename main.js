@@ -1,10 +1,11 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, dialog} = require('electron')
+const isDev = require('electron-is-dev')
 
-try {
-	// the try catch is needed to avoid "Cannot find module" error in production
+if (isDev) {
 	require('electron-reloader')(module);
-} catch (err) {}
+}
+console.log('hello')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -15,14 +16,16 @@ function createWindow () {
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
-		icon: './icon/icon-2141485_32.png'
+		icon: './icon/64x64.png'
 	})
 
 	// and load the index.html of the app.
 	mainWindow.loadFile('app/index.html')
 
 	// Open the DevTools.
-	mainWindow.webContents.openDevTools()
+	if (isDev) {
+		mainWindow.webContents.openDevTools()
+	}
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function () {
