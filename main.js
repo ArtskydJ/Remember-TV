@@ -5,7 +5,6 @@ const isDev = require('electron-is-dev')
 if (isDev) {
 	require('electron-reloader')(module);
 }
-console.log('hello')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -14,9 +13,16 @@ let mainWindow
 function createWindow () {
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
-		icon: './icon/64x64.png'
+		backgroundColor: '#333',
+		show: false,
+		width: 650,
+		height: 450,
+		minWidth: 400,
+		minHeight: 300,
+		webPreferences: {
+			nodeIntegration: true
+		},
+		icon: './icon/icon.png'
 	})
 	Menu.setApplicationMenu(null)
 
@@ -27,6 +33,10 @@ function createWindow () {
 	if (isDev) {
 		mainWindow.webContents.openDevTools()
 	}
+
+	mainWindow.on('ready-to-show', () => {
+		mainWindow.show()
+	})
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function () {

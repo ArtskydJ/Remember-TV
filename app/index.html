@@ -2,13 +2,14 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline'">
 		<title>Remember TV</title>
 		<style type="text/css">
 			body {
 				font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
 				font-size: 14pt;
 				background-color: #333;
-				color: #ddd;
+				color: #777;
 				margin-left: 1em;
 				
 				/* Scrollbar hack */
@@ -46,9 +47,11 @@
 				padding: 0.1em;
 				border-radius: 0.2em;
 				cursor: pointer;
+				color: #ccc;
 			}
 			.list-item:hover {
 				background-color: #444;
+				color: #fff;
 				outline: 1px solid #222;
 			}
 			.progress {
@@ -78,7 +81,6 @@
 				text-overflow: ellipsis;
 			}
 			#title {
-				color: #888;
 				margin: 0 0 0.5em;
 			}
 			body.modal-open {
@@ -109,19 +111,19 @@
 				background-color: #333;
 				border-radius: 0.3em;
 				border: 2px solid #111;
-				color: #aaa;
+				color: #ccc;
 				font-size: 1em;
 				font-weight: bold;
 				outline: none;
 			}
 			button:hover {
 				background-color: #444;
-				color: #eee;
+				color: #fff;
 			}
 		</style>
 	</head>
 	<body>
-		<h1 id="title">TV Shows</h1>
+		<h1 id="title">Remember TV</h1>
 
 		<button id="browse">Browse</button><span id="selected-dir"></span>
 		<div id="list"></div>

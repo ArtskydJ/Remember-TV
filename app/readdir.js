@@ -24,7 +24,6 @@ function readsubdir(pnode) {
 			relPath: path.join(pnode.relPath, dirent.name),
 			parent: pnode
 		}
-		cnode.prettyPath = cnode.relPath.slice(1).split(path.sep).join(' — ')
 
 		var ext = path.extname(cnode.name).slice(1)
 		if (dirent.isDirectory()) {

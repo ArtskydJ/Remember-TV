@@ -1,3 +1,4 @@
+var path = require('path')
 var h = require('hyperscript')
 var open = require('opn')
 
@@ -8,9 +9,9 @@ module.exports = function loadNode(state, pnode) {
 	window.scrollTo(0, 0)
 	eleList.innerHTML = ''
 	if (!pnode.parent) {
-		eleTitle.innerHTML = 'TV Shows'
+		eleTitle.innerHTML = 'Remember TV'
 	} else {
-		eleTitle.innerHTML = pnode.prettyPath
+		eleTitle.innerHTML = prettyPath(pnode.relPath)
 		addListItem({
 			cnode: { icon: '↩', name: 'Go Back', type: 'back' },
 			onleftclick: function () { loadNode(state, pnode.parent) }
@@ -67,13 +68,14 @@ function addListItem({ cnode, state, onleftclick, onrightclick }) {
 		}
 	}
 
+	var nameOptions = cnode.type === 'file' ? { title: cnode.name } : {}
+
 	var div = h(`.list-item.${cnode.type}`, {
 		onclick: eventWrapper(onleftclick),
 		oncontextmenu: eventWrapper(onrightclick || (a=>{}))
 	}, [
 		h('span.icon', cnode.icon),
-		h('.name', [ cnode.name ]),
-		// h('button', { onclick:()=>{ console.log('markWatched') } }, [ 'Mark Watched' ]),
+		h('.name', nameOptions, [ prettyName(cnode.name) ]),
 		{
 			folder: ()=> h('.progress', [ getWatchedChildren(state, cnode) + '/' + getTotalChildren(cnode) ]),
 			file: ()=>h(`.progress.icon${ state.get(cnode) ? '.watched' : '' }`),
@@ -109,4 +111,18 @@ function setChildrenWatched(state, node, newIsWatched) {
 	node.files.forEach(function (cnode) {
 		state.set(cnode, newIsWatched)
 	})
+}
+function prettyPath(relPath) {
+	return relPath
+		.slice(1)
+		.split(path.sep)
+		.join(' — ')
+}
+function prettyName(name) {
+	return name
+		.replace(/(.+)\.[^.]+/, '$1')
+		.replace(/\[?\b((dvd|br)rip|xvid|hdtv|(72|108)0p?|sd|web-dl)\b.+/i, '')
+		// if there are no spaces, then replace dots, underscores with spaces
+		.replace(/^[^ ]+$/, s => s.replace(/[._]/g, ' '))
+		.trim()
 }
