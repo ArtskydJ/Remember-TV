@@ -1,5 +1,5 @@
 {
-  "name": "track-watched-tv-shows",
+  "name": "Remember TV",
   "productName": "Remember TV",
   "version": "1.0.0",
   "description": "An electron app to track which episodes you've watched, which are in progress ",
