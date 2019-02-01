@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, dialog} = require('electron')
+const {app, BrowserWindow, dialog, Menu} = require('electron')
 const isDev = require('electron-is-dev')
 
 if (isDev) {
@@ -18,6 +18,7 @@ function createWindow () {
 		height: 600,
 		icon: './icon/64x64.png'
 	})
+	Menu.setApplicationMenu(null)
 
 	// and load the index.html of the app.
 	mainWindow.loadFile('app/index.html')
