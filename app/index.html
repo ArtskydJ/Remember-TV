@@ -9,12 +9,34 @@
 				font-size: 14pt;
 				background-color: #333;
 				color: #ddd;
+				margin-left: 1em;
+				
+				/* Scrollbar hack */
+				overflow-y: scroll;
+				margin-right: 0.2em;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
 			}
+			::-webkit-scrollbar {
+				width: 0.8em;
+			}
+			::-webkit-scrollbar-track {
+				background-color: #333; /* App bg color */
+			}
+			::-webkit-scrollbar-thumb {
+				border: 1px solid #222;
+				background-color: #444;
+				border-radius: 0.2em;
+			}
+
 			#selected-dir {
 				margin-left: 1em;
 			}
 			#list {
-				margin-top: 1em;
+				margin: 1em 0;
 			}
 			.list-item {
 				display: flex;
@@ -22,7 +44,7 @@
 				width: 100%;
 				box-sizing: border-box;
 				padding: 0.1em;
-				border-radius: 0.1em;
+				border-radius: 0.2em;
 				cursor: pointer;
 			}
 			.list-item:hover {
@@ -55,10 +77,9 @@
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
-			#heading {
+			#title {
 				color: #888;
-				margin: 0;
-				padding-left: 1em;
+				margin: 0 0 0.5em;
 			}
 			body.modal-open {
 				overflow: hidden;
@@ -88,7 +109,7 @@
 				background-color: #333;
 				border-radius: 0.3em;
 				border: 2px solid #111;
-				color: #888;
+				color: #aaa;
 				font-size: 1em;
 				font-weight: bold;
 				outline: none;
@@ -100,7 +121,7 @@
 		</style>
 	</head>
 	<body>
-		<h2 id="title">TV Shows</h2>
+		<h1 id="title">TV Shows</h1>
 
 		<button id="browse">Browse</button><span id="selected-dir"></span>
 		<div id="list"></div>
