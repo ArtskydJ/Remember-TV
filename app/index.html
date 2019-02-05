@@ -10,8 +10,9 @@
 				font-size: 14pt;
 				background-color: #333;
 				color: #777;
+			}
+			#body {
 				margin-left: 1em;
-				
 				/* Scrollbar hack */
 				overflow-y: scroll;
 				margin-right: 0.2em;
@@ -83,7 +84,7 @@
 			#title {
 				margin: 0 0 0.5em;
 			}
-			body.modal-open {
+			body.modal-open #body {
 				overflow: hidden;
 			}
 			body.modal-open #block-input {
@@ -120,18 +121,40 @@
 				background-color: #444;
 				color: #fff;
 			}
+			ul#protips:before {
+				content: 'Protip:';
+				font-weight: bold;
+			}
+			ul#protips {
+				margin-top: 2em;
+				display: inline-block;
+			}
+			ul#protips li {
+				display: none;
+			}
+			ul#protips li.show {
+				display: inline;
+			}
 		</style>
 	</head>
 	<body>
-		<h1 id="title">Remember TV</h1>
+		<div id="body">
+			<h1 id="title">Remember TV</h1>
 
-		<button id="browse">Browse</button><span id="selected-dir"></span>
-		<div id="list"></div>
-
+			<button id="browse">Browse</button><span id="selected-dir"></span>
+			<div id="list"></div>
+		</div>
 		<div id="block-input">
 			<div id="circle-slash-icon">⊘</div>
 			Wait until the media player is closed
+			<ul id="protips">
+				<li>Right-click a video to mark it as watched</li>
+				<li>Right-click a folder to mark its contents as watched or unwatched</li>
+				<li>If you browse to a different folder, I won't forget your progress in other folders</li>
+				<!-- Add more -->
+			</ul>
 		</div>
+
 
 		<script type="text/javascript">
 			const Store = require('electron-store')
@@ -152,6 +175,9 @@
 					load()
 				}
 			})
+
+			var protips = byId('protips').children
+			protips[Math.floor(Math.random(protips.length))].className = 'show'
 
 
 			function load(){
