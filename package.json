@@ -13,13 +13,13 @@
   "author": "ArtskydJ",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^4.0.1",
-    "electron-packager": "^13.0.1",
-    "electron-reloader": "^0.2.0"
+    "electron": "^8.0.0",
+    "electron-packager": "^14.2.1",
+    "electron-reloader": "^1.0.0"
   },
   "dependencies": {
-    "electron-is-dev": "^1.0.1",
-    "electron-store": "^2.0.0",
+    "electron-is-dev": "^1.1.0",
+    "electron-store": "^5.1.0",
     "hyperscript": "^2.0.2",
     "opn": "^5.4.0"
   }
