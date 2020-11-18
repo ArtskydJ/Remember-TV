@@ -56,10 +56,19 @@
 				outline: 1px solid #222;
 			}
 			.progress {
-				text-align:right;
+				text-align: right;
 			}
 			.progress, .icon {
 				padding: 0 0.5em;
+			}
+			.progress.none {
+				color: orange;
+			}
+			.progress.partial {
+				color: #19a0ff;
+			}
+			.progress.all {
+				color: #00b300;
 			}
 			.file .progress::after {
 				content: '✗';
@@ -67,7 +76,7 @@
 			}
 			.file .progress.watched::after {
 				content: '✓';
-				color: green;
+				color: #00b300;
 			}
 			.icon {
 				display: inline-block;
@@ -187,12 +196,12 @@
 
 				byId('list').innerHTML = 'Scanning... Please wait'
 
-				setTimeout(() => {
+				setImmediate(() => {
 					// Let the UI load, then run the blocking FS code
 					const files = readdir(absPath)
 					const state = watchedState(store)
 					loadDirNode(state, files)
-				}, 1)
+				})
 			}
 
 			function byId(id) {

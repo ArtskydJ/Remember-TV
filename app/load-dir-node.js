@@ -1,9 +1,9 @@
-var path = require('path')
-var h = require('hyperscript')
-var open = require('opn')
+const path = require('path')
+const h = require('hyperscript')
+const open = require('opn')
 
-var eleTitle = document.getElementById('title')
-var eleList = document.getElementById('list')
+const eleTitle = document.getElementById('title')
+const eleList = document.getElementById('list')
 
 module.exports = function loadNode(state, pnode) {
 	window.scrollTo(0, 0)
@@ -14,22 +14,28 @@ module.exports = function loadNode(state, pnode) {
 		eleTitle.innerHTML = prettyPath(pnode.relPath)
 		addListItem({
 			cnode: { icon: '↩', name: 'Go Back', type: 'back' },
-			onleftclick: function () { loadNode(state, pnode.parent) }
+			onleftclick: () => loadNode(state, pnode.parent),
 		})
 	}
 	pnode.folders.forEach(function addFolder(cnode) {
-		addListItem({ cnode, state,
-			onleftclick: function (eleListItem) { loadNode(state, cnode) },
-			onrightclick: function (eleListItem) {
-				var total = getTotalChildren(cnode)
-				var watched = getWatchedChildren(state, cnode)
-				var watchedAll = total === watched
-				var message = `Mark all video files as ${watchedAll ? 'un' : ''}watched?`
+		addListItem({
+			cnode,
+			state,
+			onleftclick: eleListItem => loadNode(state, cnode),
+			onrightclick: eleListItem => {
+				const total = getTotalChildren(cnode)
+				const watched = getWatchedChildren(state, cnode)
+				const watchedAll = total === watched
+				const message = `Mark all video files as ${watchedAll ? 'un' : ''}watched?`
 				if (confirm(message)) {
 					setChildrenWatched(state, cnode, !watchedAll)
 					state.save()
 
 					eleListItem.lastChild.innerHTML = `${watchedAll ? '0' : total}/${total}`
+					eleListItem.lastChild.classList.remove('all')
+					eleListItem.lastChild.classList.remove('partial')
+					eleListItem.lastChild.classList.remove('none')
+					eleListItem.lastChild.classList.add(watchedAll ? 'none' : 'all')
 				}
 			}
 		})
@@ -42,86 +48,81 @@ module.exports = function loadNode(state, pnode) {
 			state.save()
 		}
 
-		addListItem({ cnode, state,
-			onleftclick: function (eleListItem) {
+		addListItem({
+			cnode,
+			state,
+			onleftclick: eleListItem => {
 				setWatched(eleListItem, true)
 
 				document.body.classList.add('modal-open')
-				open(cnode.absPath).then(function () {
-					document.body.classList.remove('modal-open')
-				})
+				open(cnode.absPath).then(() => document.body.classList.remove('modal-open'))
 			},
-			onrightclick: function (eleListItem) {
-				setWatched(eleListItem, !state.get(cnode))
-			}
+			onrightclick: eleListItem => setWatched(eleListItem, !state.get(cnode))
 		})
 	})
 }
 
 function addListItem({ cnode, state, onleftclick, onrightclick }) {
 	function eventWrapper(eventHandler) {
-		return function evhw(ev) {
+		return ev => {
 			ev.preventDefault()
 			ev.stopPropagation()
-			eventHandler(div)
+			eventHandler && eventHandler(div)
 			return false
 		}
 	}
 
-	var nameOptions = cnode.type === 'file' ? { title: cnode.name } : {}
+	const nameOptions = cnode.type === 'file' ? { title: cnode.name } : {}
 
-	var div = h(`.list-item.${cnode.type}`, {
+	let progressIndicator = ''
+	if (cnode.type === 'folder') {
+		const watched = getWatchedChildren(state, cnode)
+		const total = getTotalChildren(cnode)
+		if (total === 0) return
+		const className = watched === total ? 'all' : (watched === 0 ? 'none' : 'partial')
+
+		progressIndicator = h(`.progress.${className}`, [ `${ watched }/${ total }` ])
+	} else if (cnode.type === 'file') {
+		progressIndicator = h(`.progress.icon${ state.get(cnode) ? '.watched' : '' }`)
+	}
+
+	const div = h(`.list-item.${cnode.type}`, {
 		onclick: eventWrapper(onleftclick),
-		oncontextmenu: eventWrapper(onrightclick || (a=>{}))
+		oncontextmenu: eventWrapper(onrightclick)
 	}, [
 		h('span.icon', cnode.icon),
 		h('.name', nameOptions, [ prettyName(cnode.name) ]),
-		{
-			folder: ()=> h('.progress', [ getWatchedChildren(state, cnode) + '/' + getTotalChildren(cnode) ]),
-			file: ()=>h(`.progress.icon${ state.get(cnode) ? '.watched' : '' }`),
-			back: ()=>'',
-		}[cnode.type]()
+		progressIndicator
 	])
 	eleList.appendChild(div)
 }
 
-function getTotalChildren(node) {
-	var folderWatchCount = node.folders.map(function (folder) {
-		return getTotalChildren(folder)
-	}).reduce(sum, 0)
-	var fileWatchCount = node.files.length
-	return folderWatchCount + fileWatchCount
-}
-function getWatchedChildren(state, node) {
-	var folderWatchCount = node.folders.map(function (folder) {
-		return getWatchedChildren(state, folder)
-	}).reduce(sum, 0)
-	var fileWatchCount = node.files.map(function (file) {
-		return Number(state.get(file))
-	}).reduce(sum, 0)
-	return folderWatchCount + fileWatchCount
-}
-function sum(memo, curr) {
-	return memo + curr
-}
+const getTotalChildren = node =>
+	sum(node.folders.map(getTotalChildren))
+	+ node.files.length
+
+const getWatchedChildren = (state, node) =>
+	sum(node.folders.map(folder => getWatchedChildren(state, folder)))
+	+ sum(node.files.map(file => Number(state.get(file))))
+
+const sum = arr => arr.reduce((a, b) => a + b, 0)
+
+
 function setChildrenWatched(state, node, newIsWatched) {
-	node.folders.forEach(function (cnode) {
-		setChildrenWatched(state, cnode, newIsWatched)
-	})
-	node.files.forEach(function (cnode) {
-		state.set(cnode, newIsWatched)
-	})
+	node.folders.forEach(cnode => setChildrenWatched(state, cnode, newIsWatched))
+	node.files.forEach(cnode => state.set(cnode, newIsWatched))
 }
 function prettyPath(relPath) {
 	return relPath
 		.slice(1)
 		.split(path.sep)
+		.map(prettyName)
 		.join(' — ')
 }
 function prettyName(name) {
 	return name
 		.replace(/(.+)\.[^.]+/, '$1')
-		.replace(/\[?\b((dvd|br)rip|xvid|hdtv|(72|108)0p?|sd|web-dl)\b.+/i, '')
+		.replace(/[\[\(]?\b(complete|(dvd|br|hd|web)rip|bluray|xvid|hdtv|(480|720|1080)p?|sd|web-dl)\b.+/i, '')
 		// if there are no spaces, then replace dots, underscores with spaces
 		.replace(/^[^ ]+$/, s => s.replace(/[._]/g, ' '))
 		.trim()

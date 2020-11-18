@@ -7,20 +7,20 @@
   "private": true,
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager ./ --overwrite --out=./dist --platform=darwin,linux,win32 --arch=ia32,x64 --icon=icon/icon"
+    "build": "electron-packager ./ --overwrite --out=./dist --platform=darwin,linux,win32 --arch=x64 --icon=icon/icon"
   },
   "repository": "https://github.com/ArtskydJ/track-watched-tv-shows",
   "author": "ArtskydJ",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^8.5.1",
-    "electron-packager": "^14.2.1",
-    "electron-reloader": "^1.0.0"
+    "electron": "^11.0.1",
+    "electron-packager": "^15.1.0",
+    "electron-reloader": "^1.0.1"
   },
   "dependencies": {
-    "electron-is-dev": "^1.1.0",
-    "electron-store": "^5.1.0",
+    "electron-is-dev": "^1.2.0",
+    "electron-store": "^6.0.1",
     "hyperscript": "^2.0.2",
-    "opn": "^5.4.0"
+    "opn": "^6.0.0"
   }
 }
