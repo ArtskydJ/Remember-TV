@@ -2,7 +2,4 @@
 - Add button to modal to close VLC
 	- Or use a built-in video player instead of VLC
 		- This could be tricky if you want to do things like change audio tracks, etc.
-- Show "pro-tips" in the modal
-- Color code the xxx/yyy progress text, to show if completed, in progress, or watched
-- Don't show empty folders
 - Make a timer on the modal, and only mark a video as "watched" if it has been playing for 15 minutes or more

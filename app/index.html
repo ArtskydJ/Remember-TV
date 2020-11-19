@@ -5,17 +5,44 @@
 		<meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline'">
 		<title>Remember TV</title>
 		<style type="text/css">
+			:root {
+				--color-main-bg: #222;
+				--color-main-text: #888;
+
+				--color-btn-bg: #333;
+				--color-btn-bg-hover: #666;
+				--color-btn-text: #ccc;
+				--color-btn-text-hover: #fff;
+
+				--color-list-bg: var(--color-main-bg);
+				--color-list-bg-hover: var(--color-btn-bg-hover);
+				--color-list-text: var(--color-btn-text);
+				--color-list-text-hover: var(--color-btn-text-hover);
+
+				--color-scroll-track: var(--color-main-bg);
+				--color-scroll-bar: var(--color-btn-bg);
+				--color-scroll-bar-hover: var(--color-btn-bg-hover);
+
+				--color-progress-blue: #19a0ff;
+				--color-progress-green: #00b400;
+				--color-progress-orange: #ffa500;
+
+				--size-border-radius: 2px;
+				--size-main-margin: 1em;
+				--size-scroll-width: 0.6em;
+				--size-scroll-margin: calc((var(--size-main-margin) - var(--size-scroll-width)) / 2);
+			}
 			body {
 				font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
 				font-size: 14pt;
-				background-color: #333;
-				color: #777;
+				background-color: var(--color-main-bg);
+				color: var(--color-main-text);
 			}
 			#body {
-				margin-left: 1em;
+				margin-left: var(--size-main-margin);
 				/* Scrollbar hack */
 				overflow-y: scroll;
-				margin-right: 0.2em;
+				margin-right: var(--size-scroll-margin);
 				position: absolute;
 				top: 0;
 				bottom: 0;
@@ -23,22 +50,27 @@
 				right: 0;
 			}
 			::-webkit-scrollbar {
-				width: 0.8em;
+				width: var(--size-scroll-width);
 			}
 			::-webkit-scrollbar-track {
-				background-color: #333; /* App bg color */
+				background-color: var(--color-scroll-track);
 			}
 			::-webkit-scrollbar-thumb {
-				border: 1px solid #222;
-				background-color: #444;
-				border-radius: 0.2em;
+				background-color: var(--color-scroll-bar);
+				border-radius: var(--size-border-radius);
+			}
+			::-webkit-scrollbar-thumb:hover {
+				background-color: var(--color-scroll-bar-hover);
+				border-radius: var(--size-border-radius);
 			}
 
 			#selected-dir {
 				margin-left: 1em;
 			}
 			#list {
-				margin: 1em 0;
+				margin: 1em;
+				margin-left: 0;
+				margin-right: var(--size-scroll-margin);
 			}
 			.list-item {
 				display: flex;
@@ -46,14 +78,14 @@
 				width: 100%;
 				box-sizing: border-box;
 				padding: 0.1em;
-				border-radius: 0.2em;
-				cursor: pointer;
-				color: #ccc;
+				border-radius: var(--size-border-radius);
+				cursor: default;
+				background-color: var(--color-list-bg);
+				color: var(--color-list-text);
 			}
 			.list-item:hover {
-				background-color: #444;
-				color: #fff;
-				outline: 1px solid #222;
+				background-color: var(--color-list-bg-hover);
+				color: var(--color-list-text-hover);
 			}
 			.progress {
 				text-align: right;
@@ -61,37 +93,42 @@
 			.progress, .icon {
 				padding: 0 0.5em;
 			}
-			.progress.none {
-				color: orange;
+/*			.progress.none {
+				color: var(--color-progress-orange);
 			}
 			.progress.partial {
-				color: #19a0ff;
+				color: var(--color-progress-blue)
 			}
 			.progress.all {
-				color: #00b300;
+				color: var(--color-progress-green);
+			}*/
+			.progress .unwatched {
+				color: var(--color-progress-orange);
+			}
+			.progress .partial {
+				color: var(--color-progress-blue)
+			}
+			.progress .watched {
+				color: var(--color-progress-green);
 			}
 			.file .progress::after {
 				content: '✗';
-				color: orange;
+				color: var(--color-progress-orange);
 			}
 			.file .progress.watched::after {
 				content: '✓';
-				color: #00b300;
+				color: var(--color-progress-green);
 			}
 			.icon {
 				display: inline-block;
+				min-width: 1em;
 			}
 			.name {
 				text-align:left;
 				width: 100%;
-			}
-			.file .name {
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
-			}
-			#title {
-				margin: 0 0 0.5em;
 			}
 			body.modal-open #body {
 				overflow: hidden;
@@ -116,19 +153,22 @@
 				display: none;
 			}
 			button {
-				cursor: pointer;
+				cursor: default;
 				padding: 0.5em 1em;
-				background-color: #333;
-				border-radius: 0.3em;
-				border: 2px solid #111;
-				color: #ccc;
+				background-color: var(--color-btn-bg);
+				border-radius: var(--size-border-radius);
+				border: none;
+				color: var(--color-btn-text);
 				font-size: 1em;
 				font-weight: bold;
 				outline: none;
 			}
 			button:hover {
-				background-color: #444;
-				color: #fff;
+				background-color: var(--color-btn-bg-hover);
+				color: var(--color-btn-text-hover);
+			}
+			#browse {
+				margin-top: 1em;
 			}
 			ul#protips:before {
 				content: 'Protip:';
@@ -148,8 +188,6 @@
 	</head>
 	<body>
 		<div id="body">
-			<h1 id="title">Remember TV</h1>
-
 			<button id="browse">Browse</button><span id="selected-dir"></span>
 			<div id="list"></div>
 		</div>
