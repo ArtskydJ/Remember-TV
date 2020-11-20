@@ -35,7 +35,9 @@ function readsubdir(pnode) {
 			pnode.files.push(cnode)
 		}
 	})
-	pnode.folders.sort((a, b) => a.name.localeCompare(b.name, 'en', { numeric: true }))
+	const sortByPrettyName = (a, b) => a.prettyName.localeCompare(b.prettyName, 'en', { numeric: true })
+	pnode.folders.sort(sortByPrettyName)
+	pnode.files.sort(sortByPrettyName)
 	return pnode
 }
 
@@ -57,7 +59,7 @@ function getParents(cnode) {
 	return parents
 }
 
-function prettyNameNoParentNames(cnode,log) {
+function prettyNameNoParentNames(cnode, log) {
 	let result = prettyName(cnode.name)
 	if (log) console.log(result)
 	getParents(cnode)
