@@ -1,23 +1,29 @@
 const h = require('hyperscript')
 const open = require('open')
+const watchedState = require('./watched-state.js')
 
 const eleList = document.getElementById('list')
 
-module.exports = function loadNode(state, pnode) {
+module.exports = function loadNode(store, pnode) {
+	store.set('cwd', pnode.absPath)
+	const state = watchedState(store)
+
 	window.scrollTo(0, 0)
 	eleList.innerHTML = ''
 	document.title = prettyPath(pnode)
+	state.save()
+
 	if (pnode.parent) {
 		addListItem({
 			cnode: { name: 'Go Back', type: 'back' },
-			onleftclick: () => loadNode(state, pnode.parent),
+			onleftclick: () => loadNode(store, pnode.parent),
 		})
 	}
 	pnode.folders.forEach(function addFolder(cnode) {
 		addListItem({
 			cnode,
 			state,
-			onleftclick: eleListItem => loadNode(state, cnode),
+			onleftclick: eleListItem => loadNode(store, cnode),
 			onrightclick: eleListItem => {
 				const { total, watched } = getChildren(cnode, state)
 				const watchedAll = total === watched
@@ -56,11 +62,11 @@ module.exports = function loadNode(state, pnode) {
 			state,
 			onleftclick: eleListItem => {
 				setWatched(eleListItem, true)
-
 				document.body.classList.add('modal-open')
-				open(cnode.absPath, { wait: true }).then(() => {
+				setTimeout(() => {
 					document.body.classList.remove('modal-open')
-				})
+				}, 5000)
+				open(cnode.absPath, { wait: true })
 			},
 			onrightclick: eleListItem => setWatched(eleListItem, !state.get(cnode))
 		})
@@ -134,27 +140,7 @@ const getChildren = (node, state) => {
 	return { total, watched, partial }
 }
 
-/*
-original... this counts the total
-
-const getChildren = (node, state) => {
-	const getTotalChildren = node =>
-		sum(node.folders.map(getTotalChildren))
-		+ node.files.length
-
-	const getWatchedChildren = (node, state) =>
-		sum(node.folders.map(folder => getWatchedChildren(folder, state)))
-		+ sum(node.files.map(file => Number(state.get(file))))
-
-	const total = getTotalChildren(node)
-	const watched = getWatchedChildren(node, state)
-	return { total, watched }
-}
-*/
-
-
 const sum = arr => arr.reduce((a, b) => a + b, 0)
-
 
 function setChildrenWatched(state, node, newIsWatched) {
 	node.folders.forEach(cnode => setChildrenWatched(state, cnode, newIsWatched))

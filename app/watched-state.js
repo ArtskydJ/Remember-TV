@@ -1,11 +1,11 @@
 module.exports = function watchedState(store) {
-	var stateObj = store.get('stateObj', {})
+	const stateObj = store.get('stateObj', {})
 
 	return {
 		get,
 		set,
 		save
-		//setFromFileObj,
+		// setFromFileObj,
 	}
 
 	function get(node) {

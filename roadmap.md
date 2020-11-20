@@ -1,5 +1,3 @@
 - Complete keyboard navigation
-- Add button to modal to close VLC
-	- Or use a built-in video player instead of VLC
-		- This could be tricky if you want to do things like change audio tracks, etc.
 - Make a timer on the modal, and only mark a video as "watched" if it has been playing for 15 minutes or more
+- Show the video runtime. No need to show folder runtimes. Those would be depressing

@@ -134,7 +134,7 @@
 				overflow: hidden;
 			}
 			body.modal-open #block-input {
-				display: block;
+				display: flex;
 			}
 			#block-input {
 				display: none;
@@ -144,10 +144,24 @@
 				top: 0;
 				bottom: 0;
 				background-color: rgba(0, 0, 0, 0.85);
-				text-align: center;
+				justify-content: center;
+				align-items: center;
 			}
 			#circle-slash-icon {
 				font-size: 100px;
+				color: transparent;
+			}
+			#circle-slash-icon:before {
+				position: absolute;
+				content: '⊘';
+				color: var(--color-main-text);
+				animation: rotateCenter 2.5s infinite;
+				animation-timing-function: linear;
+				transform-origin: 50% 81px 0;
+			}
+			@keyframes rotateCenter {
+				0% { transform: rotate(0deg); }
+				100% { transform: rotate(360deg); }
 			}
 			#inputdir {
 				display: none;
@@ -193,57 +207,56 @@
 		</div>
 		<div id="block-input">
 			<div id="circle-slash-icon">⊘</div>
-			Wait until the media player is closed
-			<ul id="protips">
-				<li>Right-click a video to mark it as watched</li>
-				<li>Right-click a folder to mark its contents as watched or unwatched</li>
-				<li>If you browse to a different folder, I won't forget your progress in other folders</li>
-				<!-- Add more -->
-			</ul>
 		</div>
 
 
 		<script type="text/javascript">
+			const electron = require('electron')
 			const Store = require('electron-store')
 			const readdir = require('./readdir.js')
 			const loadDirNode = require('./load-dir-node.js')
-			const watchedState = require('./watched-state.js')
 
 			const store = new Store()
 			// store.openInEditor()
 			load()
 
-			const electron = require('electron')
-			const mainProcess = electron.remote.require('./main')
-			byId('browse').addEventListener('click', () => {
-				var selectResults = mainProcess.selectDirectory()
-				if (selectResults.length) {
-					store.set('absPath', selectResults[0])
-					load()
-				}
-			})
-
-			var protips = byId('protips').children
-			protips[Math.floor(Math.random(protips.length))].className = 'show'
-
-
 			function load(){
 				var absPath = store.get('absPath')
-				byId('selected-dir').innerHTML = absPath || '⬿ Where are your video files? Choose a folder!'
-				if (!absPath) return false
+				if (!absPath) {
+					byId('selected-dir').innerHTML = '⬿ Where are your video files? Choose a folder!'
+					return false
+				}
+				byId('selected-dir').innerHTML = absPath
 
 				byId('list').innerHTML = 'Scanning... Please wait'
 
 				setImmediate(() => {
 					// Let the UI load, then run the blocking FS code
-					const files = readdir(absPath)
-					const state = watchedState(store)
-					loadDirNode(state, files)
+					let rootNode = readdir(absPath)
+					const cwd = store.get('cwd')
+					const node = cwd ? getCwdNode(cwd, rootNode) : rootNode
+					loadDirNode(store, node)
 				})
 			}
 
+
+			const mainProcess = electron.remote.require('./main')
+			byId('browse').addEventListener('click', () => {
+				var selectResults = mainProcess.selectDirectory()
+				if (selectResults.length) {
+					store.set('absPath', selectResults[0])
+					store.set('cwd', selectResults[0])
+					load()
+				}
+			})
+
 			function byId(id) {
 				return document.getElementById(id)
+			}
+
+			function getCwdNode(cwd, pnode) {
+				const closerNode = pnode.folders.find(folder => cwd.startsWith(folder.absPath))
+				return closerNode ? getCwdNode(cwd, closerNode) : pnode
 			}
 		</script>
 	</body>
