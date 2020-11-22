@@ -1,5 +1,5 @@
+const { shell } = require('electron')
 const h = require('hyperscript')
-const open = require('open')
 const watchedState = require('./watched-state.js')
 
 const eleList = document.getElementById('list')
@@ -66,7 +66,8 @@ module.exports = function loadNode(store, pnode) {
 				setTimeout(() => {
 					document.body.classList.remove('modal-open')
 				}, 5000)
-				open(cnode.absPath, { wait: true })
+				shell.openPath(cnode.absPath)
+					.then(e => e && alert(e.message))
 			},
 			onrightclick: eleListItem => setWatched(eleListItem, !state.get(cnode))
 		})
