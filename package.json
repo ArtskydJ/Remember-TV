@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager ./ --overwrite --out=./dist --platform=darwin,linux,win32 --arch=x64 --icon=icon/icon"
+    "build": "electron-packager ./ --overwrite --out=./dist --platform=darwin,linux,win32 --arch=x64 --icon=icon/icon2tv"
   },
   "repository": "https://github.com/ArtskydJ/track-watched-tv-shows",
   "author": "ArtskydJ",

@@ -1,0 +1,29 @@
+OVERVIEW
+
+We need:
+.png for linux
+.icns for macs
+.ico for windows
+
+
+HOW TO
+
+1. Create a 512x512 or 1024x1024 png, and save as icon{whatever}_SOURCE.png
+
+2. To create the mac icon{whatever}.icns file, use:
+	- https://cloudconvert.com/png-to-icns
+	- OR https://makeappicon.com/
+
+
+3. In paint.net, downscale to 64x64 using Best Quality sampling. Save the 64x64 png as icon{whatever}.png.
+
+4. In paint.net, downscale the source png to 256x256 using Best Quality as icon{whatever}.ico file. Use a Merged Image with 256, 64, 48, 40, 32, 24, 20, and 16 pixel square images, all 32-bit depth.
+OR only export the 256x256?
+
+5. In package.json, change the build script to `--icon=icon/icon{whatever}` (no extension)
+
+
+
+OR
+Try using the native image API to just load the large PNG, and have it auto-rescale all the needed icons?
+

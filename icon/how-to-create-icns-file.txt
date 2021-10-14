@@ -1,6 +1,0 @@
-https://cloudconvert.com/png-to-icns
-https://askubuntu.com/a/223230
-
-The online convertor was complaining when I fed it the 640x640 png.
-16x16, 32x32, 128x128, 256x256, 512x512 and 1024x1024 are supported by png2icns, which is probably what cloudconvert is using.
-I tried a 512x512 file, and it worked great.
