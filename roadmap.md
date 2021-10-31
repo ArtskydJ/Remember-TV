@@ -1,9 +1,9 @@
 ## easy
 - Show what folder you're in
-- Show the video runtime. No need to show folder runtimes. Those would be depressing
 - Browse button is broken?
 
 ## not so easy
+- Show the video duration. No need to show folder duration. Those would be depressing
 - Use svelte as a front-end lib instead of my hand-rolled garbage
 - Star a folder which makes it also show up at the top of that folder
 - Complete keyboard navigation

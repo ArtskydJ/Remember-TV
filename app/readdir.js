@@ -30,7 +30,7 @@ function readsubdir(pnode) {
 			cnode.type = 'folder'
 			pnode.folders.push(cnode)
 			readsubdir(cnode)
-		} else if (videoExts.includes(ext)) {
+		} else if (videoExts.has(ext)) {
 			cnode.type = 'file'
 			pnode.files.push(cnode)
 		}
