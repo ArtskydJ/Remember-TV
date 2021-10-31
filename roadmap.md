@@ -1,5 +1,4 @@
 ## easy
-- Stop normalizing the filename so much.  Leave the season/episode, and resolution
 - Show what folder you're in
 - Show the video runtime. No need to show folder runtimes. Those would be depressing
 - Browse button is broken?
@@ -8,6 +7,7 @@
 - Use svelte as a front-end lib instead of my hand-rolled garbage
 - Star a folder which makes it also show up at the top of that folder
 - Complete keyboard navigation
+- Persist the window size and position between opening/closing the window
 
 ## icon (low priority)
 
