@@ -51,7 +51,7 @@ module.exports = function loadNode(store, pnode) {
 	})
 	pnode.files.forEach(function addFile(cnode) {
 		function setWatched(eleListItem, newIsWatched) {
-			eleListItem.lastChild.classList[newIsWatched ? 'add' : 'remove']('watched')
+			eleListItem.classList[newIsWatched ? 'add' : 'remove']('watched')
 
 			state.set(cnode, newIsWatched)
 			state.save()
@@ -85,6 +85,8 @@ function addListItem({ cnode, state, onleftclick, onrightclick }) {
 	}
 
 	let progressIndicator = ''
+	let isWatched = false
+
 	if (cnode.type === 'folder') {
 		const { total, watched, partial } = getChildren(cnode, state)
 		if (total === 0) return
@@ -97,8 +99,11 @@ function addListItem({ cnode, state, onleftclick, onrightclick }) {
 			partial && h('span.partial', [ partial ]),
 			unwatched && h('span.unwatched', [ unwatched ]),
 		].filter(Boolean).flatMap((e, i) => i ? [ ':', e ] : e))
+
+		isWatched = watched === total
 	} else if (cnode.type === 'file') {
-		progressIndicator = h(`.progress.icon${ state.get(cnode) ? '.watched' : '' }`)
+		isWatched = state.get(cnode)
+		progressIndicator = h('.progress.icon')
 	}
 	const icon = {
 		folder: '📁',
@@ -106,7 +111,7 @@ function addListItem({ cnode, state, onleftclick, onrightclick }) {
 		back: '↩',
 	}[cnode.type]
 
-	const div = h(`.list-item.${cnode.type}`, {
+	const div = h(`.list-item.${cnode.type}${isWatched ? '.watched' : ''}`, {
 		onclick: eventWrapper(onleftclick),
 		oncontextmenu: eventWrapper(onrightclick)
 	}, [
