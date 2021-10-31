@@ -1,13 +1,18 @@
 {
   "name": "Remember-TV",
   "productName": "Remember TV",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An electron app to track which episodes you've watched, which are in progress",
   "main": "main.js",
   "private": true,
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager ./ --overwrite --out=./dist --platform=darwin,linux,win32 --arch=x64 --icon=icon/icon2tv"
+    "build": "npm run package && npm run zip-all",
+    "package": "electron-packager ./ --overwrite --out=./dist --platform=darwin,linux,win32 --arch=x64 --icon=icon/icon2tv",
+    "zip-linux": "tar -acf dist/Remember-TV-linux-x64.zip \"dist/Remember TV-linux-x64\"",
+    "zip-macos": "tar -acf dist/Remember-TV-macos-x64.zip \"dist/Remember TV-darwin-x64\"",
+    "zip-windows": "tar -acf dist/Remember-TV-windows-x64.zip \"dist/Remember TV-win32-x64\"",
+    "zip-all":"npm run zip-linux && npm run zip-macos && npm run zip-windows"
   },
   "repository": "https://github.com/ArtskydJ/track-watched-tv-shows",
   "author": "ArtskydJ",
