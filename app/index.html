@@ -18,6 +18,8 @@
 				--color-list-bg-hover: var(--color-btn-bg-hover);
 				--color-list-text: var(--color-btn-text);
 				--color-list-text-hover: var(--color-btn-text-hover);
+				--color-main-text-subtle: #777;
+				--color-main-text-subtle-hover: #bbb;
 
 				--color-scroll-track: var(--color-main-bg);
 				--color-scroll-bar: var(--color-btn-bg);
@@ -115,7 +117,7 @@
 				content: '✗';
 				color: var(--color-progress-orange);
 			}
-			.file .progress.watched::after {
+			.file.watched .progress::after {
 				content: '✓';
 				color: var(--color-progress-green);
 			}
@@ -129,6 +131,12 @@
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
+			}
+			.list-item.watched .name {
+				color: var(--color-main-text-subtle);
+			}
+			.list-item.watched:hover .name {
+				color: var(--color-main-text-subtle-hover);
 			}
 			body.modal-open #body {
 				overflow: hidden;

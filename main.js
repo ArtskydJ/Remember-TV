@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, dialog, Menu } = require('electron')
+const windowStateKeeper = require('electron-window-state')
 const isDev = require('electron-is-dev')
 
 if (isDev) {
@@ -11,10 +12,19 @@ if (isDev) {
 let mainWindow
 
 function createWindow() {
+	const mainWindowSize = windowStateKeeper({
+		defaultWidth: 450,
+		defaultHeight: 800,
+	})
+	const { x, y, width, height } = mainWindowSize
+
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
-		width: 450 + (isDev ? 600 : 0),
-		height: 800,
+		x,
+		y,
+		width,
+		height,
+
 		minWidth: 300,
 		minHeight: 400,
 
@@ -27,6 +37,9 @@ function createWindow() {
 		},
 		icon: './icon/icon.png'
 	})
+
+	mainWindowSize.manage(mainWindow)
+
 	Menu.setApplicationMenu(null)
 
 	// and load the index.html of the app.
