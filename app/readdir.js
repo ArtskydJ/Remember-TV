@@ -23,7 +23,7 @@ function readsubdir(pnode) {
 			absPath: path.join(pnode.absPath, dirent.name),
 			parent: pnode
 		}
-		cnode.prettyName = prettyNameNoParentNames(cnode)
+		cnode.prettyName = prettyName(cnode.name)
 
 		const ext = path.extname(cnode.name).slice(1)
 		if (dirent.isDirectory()) {
@@ -43,8 +43,8 @@ function readsubdir(pnode) {
 
 function prettyName(name) {
 	return name
-		.replace(/(.+)\.[^.]+/, '$1')
-		.replace(/[\[\(]?\b(complete|(dvd|br|hd|web)rip|bluray|xvid|hdtv|(480|720|1080)p?|sd|web-dl)\b.+/i, '')
+		.replace(/(.+)\.[^.]+/, '$1') // remove file extension
+		.replace(/[\[\(]?\b(complete|(dvd|br|hd|web)rip|bluray|xvid|hdtv|web-dl)\b.+/i, '')
 		.replace(/[._]/g, ' ')
 		.trim()
 }
@@ -57,16 +57,4 @@ function getParents(cnode) {
 		parents.push(node)
 	}
 	return parents
-}
-
-function prettyNameNoParentNames(cnode, log) {
-	let result = prettyName(cnode.name)
-	if (log) console.log(result)
-	getParents(cnode)
-		.forEach(node => {
-			if (result.toLowerCase().startsWith(node.prettyName.toLowerCase())) {
-				result = result.slice(node.prettyName.length).trimStart()
-			}
-		})
-	return result
 }
