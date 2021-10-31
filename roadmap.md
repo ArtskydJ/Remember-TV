@@ -7,7 +7,6 @@
 - Use svelte as a front-end lib instead of my hand-rolled garbage
 - Star a folder which makes it also show up at the top of that folder
 - Complete keyboard navigation
-- Persist the window size and position between opening/closing the window
 
 ## icon (low priority)
 
