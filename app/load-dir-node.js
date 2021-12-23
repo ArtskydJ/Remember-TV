@@ -32,19 +32,12 @@ module.exports = function loadNode(store, pnode) {
 					setChildrenWatched(state, cnode, !watchedAll)
 					state.save()
 
-					const watched = watchedAll ? 0 : total
-					const partial = 0
-					const unwatched = watchedAll ? total : 0
-
-
-					const progressIndicator = h('.progress', {
-						title: `Unwatched: ${unwatched} | Partial: ${partial} | Watched: ${watched}`
-					}, [
-						h(`span.${watchedAll ? 'un' : ''}watched`, [ total ]),
-					])
-
 					eleListItem.removeChild(eleListItem.lastChild)
-					eleListItem.appendChild(progressIndicator)
+					eleListItem.appendChild(createFolderProgressIndicator({
+						watched: watchedAll ? 0 : total,
+						partial: 0,
+						unwatched: watchedAll ? total : 0,
+					}))
 				}
 			}
 		})
@@ -92,13 +85,7 @@ function addListItem({ cnode, state, onleftclick, onrightclick }) {
 		if (total === 0) return
 		const unwatched = total - watched - partial
 
-		progressIndicator = h('.progress', {
-			title: `Unwatched: ${unwatched} | Partial: ${partial} | Watched: ${watched}`
-		}, [
-			watched && h('span.watched', [ watched ]),
-			partial && h('span.partial', [ partial ]),
-			unwatched && h('span.unwatched', [ unwatched ]),
-		].filter(Boolean).flatMap((e, i) => i ? [ ':', e ] : e))
+		progressIndicator = createFolderProgressIndicator({ watched, partial, unwatched })
 
 		isWatched = watched === total
 	} else if (cnode.type === 'file') {
@@ -150,6 +137,16 @@ const getChildren = (node, state) => {
 }
 
 const sum = arr => arr.reduce((a, b) => a + b, 0)
+
+function createFolderProgressIndicator({ watched, partial, unwatched }) {
+	return h('.progress', {
+		title: `Watched: ${watched} | Partial: ${partial} | Unwatched: ${unwatched}`
+	}, [
+		watched && h('span.watched', [ watched ]),
+		partial && h('span.partial', [ partial ]),
+		unwatched && h('span.unwatched', [ unwatched ]),
+	].filter(Boolean).flatMap((e, i) => i ? [ ':', e ] : e))
+}
 
 function setChildrenWatched(state, node, newIsWatched) {
 	node.folders.forEach(cnode => setChildrenWatched(state, cnode, newIsWatched))
