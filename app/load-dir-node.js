@@ -32,6 +32,8 @@ module.exports = function loadNode(store, pnode) {
 					setChildrenWatched(state, cnode, !watchedAll)
 					state.save()
 
+					eleListItem.classList[watchedAll ? 'remove' : 'add']('watched')
+
 					eleListItem.removeChild(eleListItem.lastChild)
 					eleListItem.appendChild(createFolderProgressIndicator({
 						watched: watchedAll ? 0 : total,
