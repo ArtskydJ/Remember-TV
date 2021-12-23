@@ -129,11 +129,14 @@ const getChildren = (node, state) => {
 		node.folders.every(folder => folderIsFullyWatched(folder, state))
 		&& node.files.every(file => Number(state.get(file)))
 
+	const folderIsUnwatched = (node, state) =>
+		node.folders.every(folder => folderIsUnwatched(folder, state))
+		&& node.files.every(file => !Number(state.get(file)))
+
 	const folderIsPartiallyWatched = (node, state) => {
-		const hasPartiallyWatchedFolders = node.folders.some(folder => folderIsPartiallyWatched(folder, state))
-		const watchedFiles = node.files.filter(file => Number(state.get(file))).length
-		const thisFolderIsPartiallyWatched = (watchedFiles > 0 && watchedFiles < node.files.length)
-		return hasPartiallyWatchedFolders || thisFolderIsPartiallyWatched
+		const isFullyWatched = folderIsFullyWatched(node, state)
+		const isUnwatched = folderIsUnwatched(node, state)
+		return !isFullyWatched && !isUnwatched
 	}
 
 	const folders = node.folders.filter(folderHasFiles)
