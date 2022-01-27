@@ -2,7 +2,6 @@
 - Star a folder which makes it also show up at the top of that folder (shows in starred, and in non-starred, below)
 - Save the scroll height of each folder you visit
 - Show what folder you're in
-- Use svelte as a front-end lib instead of my hand-rolled garbage
 
 ## medium priority
 - Show the video duration. No need to show folder duration. Those would be depressing

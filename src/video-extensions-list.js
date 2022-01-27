@@ -1,6 +1,6 @@
 // Extracted from https://github.com/jshttp/mime-db/blob/master/db.json
 
-module.exports = new Set([
+export default new Set([
 	"3g2",
 	"3gp",
 	"3gpp",

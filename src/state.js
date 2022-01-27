@@ -1,5 +1,5 @@
-module.exports = function watchedState(store) {
-	const stateObj = store.get('stateObj', {})
+export default function watchedState(store, key) {
+	const stateObj = store.get(key, {})
 
 	return {
 		get,
@@ -10,7 +10,7 @@ module.exports = function watchedState(store) {
 
 	function get(node) {
 		if (stateObj[node.absPath] === undefined) {
-			stateObj[node.absPath] = false
+			stateObj[node.absPath] = null
 		}
 		return stateObj[node.absPath]
 	}
@@ -20,7 +20,7 @@ module.exports = function watchedState(store) {
 	}
 
 	function save() {
-		store.set('stateObj', stateObj)
+		store.set(key, stateObj)
 		return stateObj
 	}
 }

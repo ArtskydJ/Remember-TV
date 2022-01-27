@@ -1,0 +1,33 @@
+:root {
+	--color-main-bg: #222;
+	--color-main-text: #888;
+
+	--color-btn-bg: #333;
+	--color-btn-bg-hover: #666;
+	--color-btn-text: #ccc;
+	--color-btn-text-hover: #fff;
+
+	--color-list-bg: var(--color-main-bg);
+	--color-list-bg-hover: var(--color-btn-bg-hover);
+	--color-list-text: var(--color-btn-text);
+	--color-list-text-hover: var(--color-btn-text-hover);
+	--color-main-text-subtle: #777;
+	--color-main-text-subtle-hover: #bbb;
+
+	--color-scroll-track: var(--color-main-bg);
+	--color-scroll-bar: var(--color-btn-bg);
+	--color-scroll-bar-hover: var(--color-btn-bg-hover);
+
+	--color-progress-blue: #19a0ff;
+	--color-progress-green: #00b400;
+	--color-progress-orange: #ffa500;
+
+	--size-border-radius: 2px;
+	--size-main-margin: 1em;
+	--size-scroll-width: 0.6em;
+	--size-scroll-margin: calc((var(--size-main-margin) - var(--size-scroll-width)) / 2);
+
+	--font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
+	--font-size: 14pt;
+}
+

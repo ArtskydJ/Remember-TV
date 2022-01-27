@@ -6,26 +6,32 @@
   "main": "main.js",
   "private": true,
   "scripts": {
+    "bundle": "rollup --config rollup.config.mjs",
+    "watch": "rollup --config rollup.config.mjs --watch",
     "start": "electron .",
     "build": "npm run package && npm run zip-all",
     "package": "electron-packager ./ --overwrite --out=./dist --platform=darwin,linux,win32 --arch=x64 --icon=icon/icon2tv",
     "zip-linux": "tar -acf dist/Remember-TV-linux-x64.zip \"dist/Remember TV-linux-x64\"",
     "zip-macos": "tar -acf dist/Remember-TV-macos-x64.zip \"dist/Remember TV-darwin-x64\"",
     "zip-windows": "tar -acf dist/Remember-TV-windows-x64.zip \"dist/Remember TV-win32-x64\"",
-    "zip-all":"npm run zip-linux && npm run zip-macos && npm run zip-windows"
+    "zip-all": "npm run zip-linux && npm run zip-macos && npm run zip-windows"
   },
   "repository": "https://github.com/ArtskydJ/track-watched-tv-shows",
   "author": "ArtskydJ",
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.1.3",
     "electron": "^11.5.0",
     "electron-packager": "^15.1.0",
-    "electron-reloader": "^1.0.1"
+    "electron-reloader": "^1.0.1",
+    "rollup": "^2.66.0",
+    "rollup-plugin-css-only": "^3.1.0",
+    "svelte": "^3.46.3"
   },
   "dependencies": {
     "electron-is-dev": "^1.2.0",
     "electron-store": "^6.0.1",
-    "electron-window-state": "^5.0.3",
-    "hyperscript": "^2.0.2"
+    "electron-window-state": "^5.0.3"
   }
 }

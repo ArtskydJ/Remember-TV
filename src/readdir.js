@@ -1,8 +1,8 @@
 const fs = require('fs')
 const path = require('path')
-const videoExts = require('./video-extensions-list.js')
+import videoExts from './video-extensions-list.js'
 
-module.exports = function readdir(absPath) {
+export default function readdir(absPath) {
 	const name = path.basename(absPath)
 	const rootNode = {
 		name,

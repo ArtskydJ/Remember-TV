@@ -43,7 +43,7 @@ function createWindow() {
 	Menu.setApplicationMenu(null)
 
 	// and load the index.html of the app.
-	mainWindow.loadFile('app/index.html')
+	mainWindow.loadFile('public/index.html')
 
 	// Open the DevTools.
 	if (isDev) {
