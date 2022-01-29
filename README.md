@@ -10,4 +10,6 @@ Open up in your TV show directory on your computer, and it tracks which you have
 
 To create files in the `dist` folder, do `npm run build`
 
-To run the program for testing, do `npm run start`
+## Developing
+
+To run the program for testing, do `npm run start` and `npm run watch` in two different console windows/tabs.

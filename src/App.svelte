@@ -4,32 +4,29 @@
 
 	import readdir from './readdir.js'
 	import State from './state.js'
-	import ListItem from './ListItem.svelte'
+	import Row from './Row.svelte'
+	import Clickable from './Clickable.svelte'
+	import FolderProgress from './FolderProgress.svelte'
 
 	const store = new Store()
 	// store.openInEditor()
 
 	let absPath
 	let node
-	let block_clicks = false
 
-	const state = State(store, 'stateObj')
+	const watchState = State(store, 'stateObj')
 	const scrollState = State(store, 'scroll')
+	const starState = State(store, 'star')
 
 	load()
 
 	function load() {
 		absPath = store.get('absPath')
-		if (!absPath) {
-			return false
-		}
-
-		setImmediate(() => {
-			// Let the UI load, then run the blocking FS code
+		if (absPath) {
 			let rootNode = readdir(absPath)
 			const cwd = store.get('cwd')
 			node = cwd ? getCwdNode(cwd, rootNode) : rootNode
-		})
+		}
 	}
 
 
@@ -43,10 +40,6 @@
 		}
 	}
 
-	function byId(id) {
-		return document.getElementById(id)
-	}
-
 	function getCwdNode(cwd, pnode) {
 		const closerNode = pnode.folders.find(folder => cwd.startsWith(folder.absPath))
 		return closerNode ? getCwdNode(cwd, closerNode) : pnode
@@ -56,32 +49,39 @@
 
 	function loadNode(pnode) {
 		store.set('cwd', pnode.absPath)
-
-		window.scrollTo(0, scrollState.get(pnode))
-		document.title = prettyPath(pnode)
-		state.save()
+		// window.scrollTo(0, scrollwatchState.get(pnode))
+		watchState.save()
 	}
 
 	function openFile(cnode) {
 		setWatched(cnode, true)
-		// block_clicks = true
-		// setTimeout(() => {
-		// 	block_clicks = false
-		// }, 2500)
 		electron.shell.openPath(cnode.absPath)
 			.then(e => e && alert(e.message))
 	}
 
 	function setWatched(cnode, newIsWatched) {
-		state.set(cnode, newIsWatched)
-		state.save()
+		watchState.set(cnode, newIsWatched)
+		watchState.save()
+	}
+
+	function toggleStar(cnode) {
+		const newIsStarred = !starState.get(cnode)
+		starState.set(cnode, newIsStarred)
+		starState.save()
+		cnode = cnode
 	}
 
 
-
-	function setChildrenWatched(state, node, newIsWatched) {
-		node.folders.forEach(cnode => setChildrenWatched(state, cnode, newIsWatched))
-		node.files.forEach(cnode => state.set(cnode, newIsWatched))
+	function confirmSetAllWatched(cnode, watchedAll) {
+		const message = `Mark all video files as ${watchedAll ? 'un' : ''}watched?`
+		if (confirm(message)) {
+			setChildrenWatched(watchState, cnode, !watchedAll)
+			watchState.save()
+		}
+	}
+	function setChildrenWatched(watchState, node, newIsWatched) {
+		node.folders.forEach(cnode => setChildrenWatched(watchState, cnode, newIsWatched))
+		node.files.forEach(cnode => watchState.set(cnode, newIsWatched))
 	}
 	function prettyPath(pnode) {
 		return getAncestry(pnode)
@@ -101,31 +101,26 @@
 
 	const sum = arr => arr.reduce((a, b) => a + b, 0)
 
-	const getFolderProgress = (node, state) => {
+	const getFolderProgress = (node, watchState) => {
 		const folderHasFiles = node => node.folders.some(folderHasFiles) || node.files.length
 
-		const folderIsFullyWatched = (node, state) =>
-			node.folders.every(folder => folderIsFullyWatched(folder, state))
-			&& node.files.every(file => Number(state.get(file)))
+		const folderIsFullyWatched = (node, watchState) =>
+			node.folders.every(folder => folderIsFullyWatched(folder, watchState))
+			&& node.files.every(file => Number(watchState.get(file)))
 
-		const folderIsUnwatched = (node, state) =>
-			node.folders.every(folder => folderIsUnwatched(folder, state))
-			&& node.files.every(file => !Number(state.get(file)))
-
-		const folderIsPartiallyWatched = (node, state) => {
-			const isFullyWatched = folderIsFullyWatched(node, state)
-			const isUnwatched = folderIsUnwatched(node, state)
-			return !isFullyWatched && !isUnwatched
-		}
+		const folderIsFullyUnwatched = (node, watchState) =>
+			node.folders.every(folder => folderIsFullyUnwatched(folder, watchState))
+			&& node.files.every(file => !Number(watchState.get(file)))
 
 		const folders = node.folders.filter(folderHasFiles)
 
 		const total = folders.length + node.files.length
-		const watched = folders.filter(folder => folderIsFullyWatched(folder, state)).length
-			+ node.files.filter(file => state.get(file)).length
-		const partial = sum(folders.map(folder => Number(folderIsPartiallyWatched(folder, state))))
+		const watched = folders.filter(folder => folderIsFullyWatched(folder, watchState)).length
+			+ node.files.filter(file => watchState.get(file)).length
 
-		const unwatched = total - watched - partial
+		const unwatched = folders.filter(folder => folderIsFullyUnwatched(folder, watchState)).length
+			+ node.files.filter(file => !watchState.get(file)).length
+		const partial = total - watched - unwatched
 
 		return { total, watched, partial, unwatched }
 	}
@@ -139,93 +134,92 @@
 </script>
 
 <div id="scroll-container">
-	<button style="margin-top: 1em;" on:click={browse_button_click}>Browse</button>
-	<span style="margin-left: 1em;">
-		{absPath || '⬿ Where are your video files? Choose a folder!'}
-	</span>
-	<div id="list">
-		{#if !node}
-			Scanning... Please wait
-		{:else}
-
-			{#if node.parent}
-				<ListItem
-					icon="↩"
-					name="Go Back"
-					onleftclick={() => { node = node.parent }}/>
-			{/if}
-
-			{#each node.folders as cnode (cnode.absPath)}
-				{@const progress = getFolderProgress(cnode, state)}
-				{@const watchedAll = progress.total === progress.watched}
-
-				<ListItem
-					icon="📁"
-					name={cnode.name}
-					prettyName={cnode.prettyName}
-					isWatched={watchedAll}
-					onleftclick={() => { node = cnode }}
-					onrightclick={() => {
-						const message = `Mark all video files as ${watchedAll ? 'un' : ''}watched?`
-						if (confirm(message)) {
-							setChildrenWatched(state, cnode, !watchedAll)
-							state.save()
-							cnode = cnode
-						}
-					}}>
-
-					{#if progress.total !== 0}
-						<span
-							class="progress"
-							class:watched={watchedAll}
-							title="Watched: {progress.watched} | Partial: {progress.partial} | Unwatched: {progress.unwatched}">
-							{#if progress.watched}<span class="watched">{progress.watched}</span>{#if progress.partial || progress.unwatched}:{/if}{/if}<!--
-							-->{#if progress.partial}<span class="partial">{progress.partial}</span>{#if progress.unwatched}:{/if}{/if}<!--
-							-->{#if progress.unwatched}<span class="unwatched">{progress.unwatched}</span>{/if}
+	{#if !node || !node.parent}
+		<Row style="margin:1em;">
+			<button class="big" on:click={browse_button_click}>Browse</button>
+			<span>
+				{absPath || '⬿ Where are your video files? Choose a folder!'}
+			</span>
+		</Row>
+	{/if}
+	{#if absPath}
+		<div id="list">
+			{#if !node}
+				Scanning... Please wait
+			{:else}
+				{#if node.parent}
+					<Row style="margin:1em;">
+						<button class="big" on:click={() => { node = node.parent }}>🡹 Parent Folder</button>
+						<span style="white-space: wrap;">
+							{@html node.absPath.slice(absPath.length + 1).replace(/\\/g, '/')}
+								<!--.split('/')
+								.map((folderName, i) => `<span style="white-space:nowrap;">${i ? '/' : ''}${folderName}</span>`)
+								.join('')-->
 						</span>
+					</Row>
+				{/if}
+
+				{#each [ 'Starred', 'All' ] as sectionName, showAll}
+					{#if node.folders.some(cnode => starState.get(cnode))}
+						<div style="margin: 1em 0 0.5em;">
+							<Row style="justify-content: center;">
+								{sectionName}
+							</Row>
+							<hr />
+						</div>
 					{/if}
-				</ListItem>
-			{/each}
+					{#each node.folders as cnode (cnode.absPath)}
+						{@const starred = starState.get(cnode)}
+						{@const progress = getFolderProgress(cnode, watchState)}
+						{@const watchedAll = progress.total === progress.watched}
+
+						{#if progress.total !== 0 && (showAll || starred)}
+							<Row>
+								<button class="subtle" class:watched={watchedAll} on:click={() => { node = cnode }} style="flex-shrink:1;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+									<span class="icon">📁</span>
+									<span title="{cnode.name}" class:watched={watchedAll}>{cnode.prettyName}</span>
+								</button>
+								<span style="flex-grow: 1;"></span>
+								<button class="subtle" on:click={() => {confirmSetAllWatched(cnode, watchedAll); cnode = cnode}}>
+									<FolderProgress {progress} />
+								</button>
+								<button class="subtle" on:click={() => {toggleStar(cnode); cnode = cnode}}>
+									<span class="star" class:starred={starred}></span>
+								</button>
+							</Row>
+						{/if}
+					{/each}
+				{/each}
 
 
-			{#each node.files as cnode (cnode.absPath)}
-				{@const watched = state.get(cnode)}
-				<ListItem
-					icon="🎥"
-					name={cnode.name}
-					prettyName={cnode.prettyName}
-					isWatched={watched}
-					onleftclick={() => {
-						openFile(cnode)
-						cnode = cnode
-					}}
-					onrightclick={() => {
-						setWatched(cnode, !state.get(cnode))
-						cnode = cnode
-					}}
-					>
-					<span
-						class="file progress"
-						class:watched={watched}></span>
-				</ListItem>
-			{/each}
-		{/if}
-	</div>
+				{#each node.files as cnode (cnode.absPath)}
+					{@const watched = watchState.get(cnode)}
+					<Row>
+						<button class="subtle" class:watched={watched} on:click={() => { openFile(cnode); cnode = cnode }} {watched} style="flex-shrink:1;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+							<span class="icon">🎥</span>
+							<span title="{cnode.name}">{cnode.prettyName}</span>
+						</button>
+						<span style="flex-grow: 1;"></span>
+						<button class="subtle" on:click={() => { setWatched(cnode, !watchState.get(cnode)); cnode = cnode }}>
+							<span class="file progress" class:watched={watched}></span>
+						</button>
+					</Row>
+				{/each}
+			{/if}
+		</div>
+	{/if}
 </div>
 
 
 <style>
 	:global(body) {
-		font-family: var(--font-family);
-		font-size: var(--font-size);
-		background-color: var(--color-main-bg);
-		color: var(--color-main-text);
+		overflow-x: hidden;
 	}
 	#scroll-container {
-		margin-left: var(--size-main-margin);
+		margin: 0;
 		/* Scrollbar hack */
+		overflow-x: hidden;
 		overflow-y: scroll;
-		margin-right: var(--size-scroll-margin);
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -248,42 +242,74 @@
 	}
 
 	#list {
-		margin: 1em;
-		margin-left: 0;
-		margin-right: var(--size-scroll-margin);
+		margin: 0 var(--size-scroll-margin);
 	}
 
+	hr {
+		margin: 0;
+		border-color: var(--color-main-text);
+	}
+
+
 	button {
-		cursor: default;
+		cursor: pointer;
+		border: none;
+		border-radius: var(--size-border-radius);
+		font-family: var(--font-family);
+		font-size: var(--font-size);
+
+		outline: none !important;
+	}
+	button:focus {
+		outline: -2px solid white !important;
+	}
+
+
+
+	button.big {
 		padding: 0.5em 1em;
 		background-color: var(--color-btn-bg);
-		border-radius: var(--size-border-radius);
-		border: none;
 		color: var(--color-btn-text);
-		font-size: 1em;
 		font-weight: bold;
-		outline: none;
+		white-space: nowrap;
 	}
 	button:hover {
 		background-color: var(--color-btn-bg-hover);
 		color: var(--color-btn-text-hover);
 	}
 
-	.progress {
-		text-align: right;
+
+
+	button.subtle {
+		/*box-sizing: border-box;*/
+		padding: 0.1em 0.2em;
+		cursor: pointer;
 	}
-	.progress {
-		padding: 0 0.5em;
+
+	button.subtle {
+		background-color: var(--color-list-bg);
+		color: var(--color-list-text);
 	}
-	.progress .unwatched {
-		color: var(--color-progress-orange);
+	button.subtle:hover {
+		background-color: var(--color-list-bg-hover);
+		color: var(--color-list-text-hover);
 	}
-	.progress .partial {
-		color: var(--color-progress-blue)
+	button.subtle.watched {
+		color: var(--color-main-text-subtle);
 	}
-	.progress .watched {
-		color: var(--color-progress-green);
+	button.subtle.watched:hover {
+		color: var(--color-main-text-subtle-hover);
 	}
+
+
+
+
+
+
+
+
+
+
 
 	.progress.file::after {
 		content: '✗';
@@ -292,5 +318,23 @@
 	.progress.file.watched::after {
 		content: '✓';
 		color: var(--color-progress-green);
+	}
+
+	.star::after {
+		content: '☆';
+		padding: 0 0.25em;
+		color: var(--color-empty-star);
+	}
+	.star.starred::after {
+		content: '★';
+		color: var(--color-filled-star);
+	}
+
+	.icon {
+		display: inline-block;
+		min-width: 1em;
+		padding-left: 0.25em;
+		padding-right: 0.5em;
+		/* padding: 0 0.5em; */
 	}
 </style>

@@ -1,4 +1,4 @@
-export default function watchedState(store, key) {
+export default function nodeState(store, key) {
 	const stateObj = store.get(key, {})
 
 	return {

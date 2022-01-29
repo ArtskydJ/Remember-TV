@@ -14,20 +14,31 @@
 	--color-main-text-subtle: #777;
 	--color-main-text-subtle-hover: #bbb;
 
-	--color-scroll-track: var(--color-main-bg);
-	--color-scroll-bar: var(--color-btn-bg);
+	--color-scroll-track: var(--color-btn-bg);
+	--color-scroll-bar: var(--color-btn-bg-hover);
 	--color-scroll-bar-hover: var(--color-btn-bg-hover);
 
 	--color-progress-blue: #19a0ff;
 	--color-progress-green: #00b400;
 	--color-progress-orange: #ffa500;
 
+	--color-filled-star: #dc0;
+	--color-empty-star: #888;
+
 	--size-border-radius: 2px;
-	--size-main-margin: 1em;
-	--size-scroll-width: 0.6em;
+	--size-main-margin: 1.2em;
+	--size-scroll-width: 0.8em;
 	--size-scroll-margin: calc((var(--size-main-margin) - var(--size-scroll-width)) / 2);
 
 	--font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
 	--font-size: 14pt;
+}
+
+
+body {
+	font-family: var(--font-family);
+	font-size: var(--font-size);
+	background-color: var(--color-main-bg);
+	color: var(--color-main-text);
 }
 

@@ -1,11 +1,9 @@
 ## high priority
-- Star a folder which makes it also show up at the top of that folder (shows in starred, and in non-starred, below)
-- Save the scroll height of each folder you visit
-- Show what folder you're in
 
 ## medium priority
 - Show the video duration. No need to show folder duration. Those would be depressing
 - Complete keyboard navigation
+- Save the scroll height of each folder you visit (less necessary now that starring is supported)
 
 ## icon (low priority)
 

@@ -23,7 +23,7 @@ function readsubdir(pnode) {
 			absPath: path.join(pnode.absPath, dirent.name),
 			parent: pnode
 		}
-		cnode.prettyName = prettyName(cnode.name)
+		cnode.prettyName = prettyName(cnode)
 
 		const ext = path.extname(cnode.name).slice(1)
 		if (dirent.isDirectory()) {
@@ -41,11 +41,14 @@ function readsubdir(pnode) {
 	return pnode
 }
 
-function prettyName(name) {
-	return name
-		.replace(/(.+)\.[^.]+/, '$1') // remove file extension
-		.replace(/[\[\(]?\b(complete|(dvd|br|hd|web)rip|bluray|xvid|hdtv|web-dl)\b.+/i, '')
+function prettyName(cnode) {
+	const parentFileNameRegex = new RegExp(`^((${getParents(cnode).map(pnode => pnode.name).join('|')}) ?)+`)
+	const fileExtRegex = new RegExp(`\\.(${[ ...videoExts ].join('|')})$`)
+	return cnode.name
+		.replace(parentFileNameRegex, '') // remove parent folder names
+		.replace(fileExtRegex, '') // remove file extension
 		.replace(/[._]/g, ' ')
+		// .replace(/\b(complete|(dvd|br|hd|web)rip|bluray|xvid|hdtv|web-dl)\b.+/i, '')
 		.trim()
 }
 
