@@ -6,7 +6,7 @@ Open up a directory of video files on your computer, and track which you have wa
 
 ## Building
 
-To create files in the `dist` folder, do `npm run build`
+To create files in the `dist` folder, do `npm run bundle && npm run build`
 
 ## Developing
 

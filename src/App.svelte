@@ -177,10 +177,10 @@
 									<span title="{cnode.name}" class:watched={watchedAll}>{cnode.prettyName}</span>
 								</button>
 								<span style="flex-grow: 1;"></span>
-								<button class="subtle" on:click={() => {confirmSetAllWatched(cnode, watchedAll); cnode = cnode}}>
+								<button class="subtle" tabindex="1" on:click={() => {confirmSetAllWatched(cnode, watchedAll); cnode = cnode}}>
 									<FolderProgress {progress} />
 								</button>
-								<button class="subtle" on:click={() => {toggleStar(cnode); cnode = cnode}}>
+								<button class="subtle" tabindex="2" on:click={() => {toggleStar(cnode); cnode = cnode}}>
 									<span class="star" class:starred={starred}></span>
 								</button>
 							</Row>
@@ -197,7 +197,7 @@
 							<span title="{cnode.name}">{cnode.prettyName}</span>
 						</button>
 						<span style="flex-grow: 1;"></span>
-						<button class="subtle" on:click={() => { setWatched(cnode, !watchState.get(cnode)); cnode = cnode }}>
+						<button class="subtle" tabindex="2" on:click={() => { setWatched(cnode, !watchState.get(cnode)); cnode = cnode }}>
 							<span class="file progress" class:watched={watched}></span>
 						</button>
 					</Row>
@@ -256,8 +256,9 @@
 
 		outline: none !important;
 	}
-	button:focus {
-		outline: -2px solid white !important;
+	button:focus-visible {
+		outline: 2px solid var(--color-btn-text-hover) !important;
+		z-index: 1;
 	}
 
 	button.big {
@@ -297,6 +298,7 @@
 
 	.progress.file::after {
 		content: '✗';
+		padding: 0 0.25em;
 		color: var(--color-progress-orange);
 	}
 	.progress.file.watched::after {

@@ -18,6 +18,12 @@ export default {
 				// hydratable: false,
 				// customElement: false,
 			},
+			onwarn: (warning, handler) => {
+				if (warning.code === 'a11y-positive-tabindex') {
+					return
+				}
+				handler(warning)
+			},
 		}),
 		css({ output: 'bundle.css' }),
 		resolve({ browser: true }),
