@@ -569,25 +569,25 @@ var app = (function () {
     }
 
     function prettyName(cnode) {
-    	const parentFileNameRegex = new RegExp(`^((${getParents(cnode).map(pnode => pnode.name).join('|')}) ?)+`);
+    	// const parentFileNameRegex = new RegExp(`^((${getParents(cnode).map(pnode => pnode.name).join('|')}) ?)+`)
     	const fileExtRegex = new RegExp(`\\.(${[ ...videoExts ].join('|')})$`);
     	return cnode.name
-    		.replace(parentFileNameRegex, '') // remove parent folder names
+    		// .replace(parentFileNameRegex, '') // remove parent folder names
     		.replace(fileExtRegex, '') // remove file extension
     		.replace(/[._]/g, ' ')
     		// .replace(/\b(complete|(dvd|br|hd|web)rip|bluray|xvid|hdtv|web-dl)\b.+/i, '')
     		.trim()
     }
 
-    function getParents(cnode) {
-    	let node = { ...cnode };
-    	const parents = [];
-    	while (node.parent) {
-    		node = node.parent;
-    		parents.push(node);
-    	}
-    	return parents
-    }
+    // function getParents(cnode) {
+    // 	let node = { ...cnode }
+    // 	const parents = []
+    // 	while (node.parent) {
+    // 		node = node.parent
+    // 		parents.push(node)
+    // 	}
+    // 	return parents
+    // }
 
     function nodeState(store, key) {
     	const stateObj = store.get(key, {});
@@ -1037,8 +1037,8 @@ var app = (function () {
     			t1 = space();
     			span = element("span");
     			t2 = text(t2_value);
-    			attr(button, "class", "big svelte-xz66b2");
-    			attr(span, "class", "svelte-xz66b2");
+    			attr(button, "class", "big svelte-qfv56v");
+    			attr(span, "class", "svelte-qfv56v");
     		},
     		m(target, anchor) {
     			insert(target, button, anchor);
@@ -1086,7 +1086,7 @@ var app = (function () {
     			div = element("div");
     			if_block.c();
     			attr(div, "id", "list");
-    			attr(div, "class", "svelte-xz66b2");
+    			attr(div, "class", "svelte-qfv56v");
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);
@@ -1370,7 +1370,7 @@ var app = (function () {
     	let button;
     	let t1;
     	let span;
-    	let raw_value = /*node*/ ctx[0].absPath.slice(/*absPath*/ ctx[1].length + 1).replace(/\\/g, '/') + "";
+    	let raw_value = /*node*/ ctx[0].absPath.slice(/*absPath*/ ctx[1].length + 1).replace(/[\\\/]/g, '<wbr>/') + "";
     	let mounted;
     	let dispose;
 
@@ -1380,9 +1380,9 @@ var app = (function () {
     			button.textContent = "🡹 Parent Folder";
     			t1 = space();
     			span = element("span");
-    			attr(button, "class", "big svelte-xz66b2");
+    			attr(button, "class", "big svelte-qfv56v");
     			set_style(span, "white-space", "wrap");
-    			attr(span, "class", "svelte-xz66b2");
+    			attr(span, "class", "svelte-qfv56v");
     		},
     		m(target, anchor) {
     			insert(target, button, anchor);
@@ -1396,7 +1396,7 @@ var app = (function () {
     			}
     		},
     		p(ctx, dirty) {
-    			if (dirty[0] & /*node, absPath*/ 3 && raw_value !== (raw_value = /*node*/ ctx[0].absPath.slice(/*absPath*/ ctx[1].length + 1).replace(/\\/g, '/') + "")) span.innerHTML = raw_value;		},
+    			if (dirty[0] & /*node, absPath*/ 3 && raw_value !== (raw_value = /*node*/ ctx[0].absPath.slice(/*absPath*/ ctx[1].length + 1).replace(/[\\\/]/g, '<wbr>/') + "")) span.innerHTML = raw_value;		},
     		d(detaching) {
     			if (detaching) detach(button);
     			if (detaching) detach(t1);
@@ -1407,7 +1407,7 @@ var app = (function () {
     	};
     }
 
-    // (163:5) {#if node.folders.some(cnode => starState.get(cnode))}
+    // (160:5) {#if node.folders.some(cnode => starState.get(cnode))}
     function create_if_block_3(ctx) {
     	let div;
     	let row;
@@ -1429,9 +1429,9 @@ var app = (function () {
     			create_component(row.$$.fragment);
     			t = space();
     			hr = element("hr");
-    			attr(hr, "class", "svelte-xz66b2");
+    			attr(hr, "class", "svelte-qfv56v");
     			set_style(div, "margin", "1em 0 0.5em");
-    			attr(div, "class", "svelte-xz66b2");
+    			attr(div, "class", "svelte-qfv56v");
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);
@@ -1456,7 +1456,7 @@ var app = (function () {
     	};
     }
 
-    // (165:7) <Row style="justify-content: center;">
+    // (162:7) <Row style="justify-content: center;">
     function create_default_slot_2(ctx) {
     	let t;
 
@@ -1474,7 +1474,7 @@ var app = (function () {
     	};
     }
 
-    // (176:6) {#if progress.total !== 0 && (showAll || starred)}
+    // (173:6) {#if progress.total !== 0 && (showAll || starred)}
     function create_if_block_2(ctx) {
     	let row;
     	let current;
@@ -1518,7 +1518,7 @@ var app = (function () {
     	};
     }
 
-    // (177:7) <Row>
+    // (174:7) <Row>
     function create_default_slot_1(ctx) {
     	let button0;
     	let span0;
@@ -1571,22 +1571,22 @@ var app = (function () {
     			t5 = space();
     			button2 = element("button");
     			span3 = element("span");
-    			attr(span0, "class", "icon svelte-xz66b2");
+    			attr(span0, "class", "icon svelte-qfv56v");
     			attr(span1, "title", span1_title_value = /*cnode*/ ctx[25].name);
-    			attr(span1, "class", "svelte-xz66b2");
+    			attr(span1, "class", "svelte-qfv56v");
     			toggle_class(span1, "watched", /*watchedAll*/ ctx[34]);
-    			attr(button0, "class", "subtle svelte-xz66b2");
+    			attr(button0, "class", "subtle svelte-qfv56v");
     			set_style(button0, "flex-shrink", "1");
     			set_style(button0, "white-space", "nowrap");
     			set_style(button0, "overflow", "hidden");
     			set_style(button0, "text-overflow", "ellipsis");
     			toggle_class(button0, "watched", /*watchedAll*/ ctx[34]);
     			set_style(span2, "flex-grow", "1");
-    			attr(span2, "class", "svelte-xz66b2");
-    			attr(button1, "class", "subtle svelte-xz66b2");
-    			attr(span3, "class", "star svelte-xz66b2");
+    			attr(span2, "class", "svelte-qfv56v");
+    			attr(button1, "class", "subtle svelte-qfv56v");
+    			attr(span3, "class", "star svelte-qfv56v");
     			toggle_class(span3, "starred", /*starred*/ ctx[32]);
-    			attr(button2, "class", "subtle svelte-xz66b2");
+    			attr(button2, "class", "subtle svelte-qfv56v");
     		},
     		m(target, anchor) {
     			insert(target, button0, anchor);
@@ -1662,7 +1662,7 @@ var app = (function () {
     	};
     }
 
-    // (171:5) {#each node.folders as cnode (cnode.absPath)}
+    // (168:5) {#each node.folders as cnode (cnode.absPath)}
     function create_each_block_2(key_1, ctx) {
     	let first;
     	let if_block_anchor;
@@ -1727,7 +1727,7 @@ var app = (function () {
     	};
     }
 
-    // (162:4) {#each [ 'Starred', 'All' ] as sectionName, showAll}
+    // (159:4) {#each [ 'Starred', 'All' ] as sectionName, showAll}
     function create_each_block_1(ctx) {
     	let show_if = /*node*/ ctx[0].folders.some(/*func*/ ctx[10]);
     	let t;
@@ -1830,7 +1830,7 @@ var app = (function () {
     	};
     }
 
-    // (197:5) <Row>
+    // (194:5) <Row>
     function create_default_slot(ctx) {
     	let button0;
     	let span0;
@@ -1871,10 +1871,10 @@ var app = (function () {
     			button1 = element("button");
     			span3 = element("span");
     			t5 = space();
-    			attr(span0, "class", "icon svelte-xz66b2");
+    			attr(span0, "class", "icon svelte-qfv56v");
     			attr(span1, "title", span1_title_value = /*cnode*/ ctx[25].name);
-    			attr(span1, "class", "svelte-xz66b2");
-    			attr(button0, "class", "subtle svelte-xz66b2");
+    			attr(span1, "class", "svelte-qfv56v");
+    			attr(button0, "class", "subtle svelte-qfv56v");
     			attr(button0, "watched", button0_watched_value = /*watched*/ ctx[26]);
     			set_style(button0, "flex-shrink", "1");
     			set_style(button0, "white-space", "nowrap");
@@ -1882,10 +1882,10 @@ var app = (function () {
     			set_style(button0, "text-overflow", "ellipsis");
     			toggle_class(button0, "watched", /*watched*/ ctx[26]);
     			set_style(span2, "flex-grow", "1");
-    			attr(span2, "class", "svelte-xz66b2");
-    			attr(span3, "class", "file progress svelte-xz66b2");
+    			attr(span2, "class", "svelte-qfv56v");
+    			attr(span3, "class", "file progress svelte-qfv56v");
     			toggle_class(span3, "watched", /*watched*/ ctx[26]);
-    			attr(button1, "class", "subtle svelte-xz66b2");
+    			attr(button1, "class", "subtle svelte-qfv56v");
     		},
     		m(target, anchor) {
     			insert(target, button0, anchor);
@@ -1942,7 +1942,7 @@ var app = (function () {
     	};
     }
 
-    // (195:4) {#each node.files as cnode (cnode.absPath)}
+    // (192:4) {#each node.files as cnode (cnode.absPath)}
     function create_each_block(key_1, ctx) {
     	let first;
     	let row;
@@ -2008,7 +2008,7 @@ var app = (function () {
     			t = space();
     			if (if_block1) if_block1.c();
     			attr(div, "id", "scroll-container");
-    			attr(div, "class", "svelte-xz66b2");
+    			attr(div, "class", "svelte-qfv56v");
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);

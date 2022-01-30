@@ -42,22 +42,22 @@ function readsubdir(pnode) {
 }
 
 function prettyName(cnode) {
-	const parentFileNameRegex = new RegExp(`^((${getParents(cnode).map(pnode => pnode.name).join('|')}) ?)+`)
+	// const parentFileNameRegex = new RegExp(`^((${getParents(cnode).map(pnode => pnode.name).join('|')}) ?)+`)
 	const fileExtRegex = new RegExp(`\\.(${[ ...videoExts ].join('|')})$`)
 	return cnode.name
-		.replace(parentFileNameRegex, '') // remove parent folder names
+		// .replace(parentFileNameRegex, '') // remove parent folder names
 		.replace(fileExtRegex, '') // remove file extension
 		.replace(/[._]/g, ' ')
 		// .replace(/\b(complete|(dvd|br|hd|web)rip|bluray|xvid|hdtv|web-dl)\b.+/i, '')
 		.trim()
 }
 
-function getParents(cnode) {
-	let node = { ...cnode }
-	const parents = []
-	while (node.parent) {
-		node = node.parent
-		parents.push(node)
-	}
-	return parents
-}
+// function getParents(cnode) {
+// 	let node = { ...cnode }
+// 	const parents = []
+// 	while (node.parent) {
+// 		node = node.parent
+// 		parents.push(node)
+// 	}
+// 	return parents
+// }

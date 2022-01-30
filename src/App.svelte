@@ -151,10 +151,7 @@
 					<Row style="margin:1em;">
 						<button class="big" on:click={() => { node = node.parent }}>🡹 Parent Folder</button>
 						<span style="white-space: wrap;">
-							{@html node.absPath.slice(absPath.length + 1).replace(/\\/g, '/')}
-								<!--.split('/')
-								.map((folderName, i) => `<span style="white-space:nowrap;">${i ? '/' : ''}${folderName}</span>`)
-								.join('')-->
+							{@html node.absPath.slice(absPath.length + 1).replace(/[\\\/]/g, '<wbr>/')}
 						</span>
 					</Row>
 				{/if}
@@ -242,14 +239,13 @@
 	}
 
 	#list {
-		margin: 0 var(--size-scroll-margin);
+		margin: 0 var(--size-scroll-margin) 1em;
 	}
 
 	hr {
 		margin: 0;
 		border-color: var(--color-main-text);
 	}
-
 
 	button {
 		cursor: pointer;
@@ -264,8 +260,6 @@
 		outline: -2px solid white !important;
 	}
 
-
-
 	button.big {
 		padding: 0.5em 1em;
 		background-color: var(--color-btn-bg);
@@ -277,7 +271,6 @@
 		background-color: var(--color-btn-bg-hover);
 		color: var(--color-btn-text-hover);
 	}
-
 
 
 	button.subtle {
@@ -302,15 +295,6 @@
 	}
 
 
-
-
-
-
-
-
-
-
-
 	.progress.file::after {
 		content: '✗';
 		color: var(--color-progress-orange);
@@ -321,12 +305,12 @@
 	}
 
 	.star::after {
-		content: '☆';
+		/*content: '☆';*/
+		content: '★';
 		padding: 0 0.25em;
 		color: var(--color-empty-star);
 	}
 	.star.starred::after {
-		content: '★';
 		color: var(--color-filled-star);
 	}
 

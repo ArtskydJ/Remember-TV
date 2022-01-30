@@ -1,10 +1,8 @@
 # Remember TV
 
-Open up in your TV show directory on your computer, and it tracks which you have watched
+Open up a directory of video files on your computer, and track which you have watched
 
-![shows](https://raw.githubusercontent.com/ArtskydJ/track-watched-tv-shows/master/screenshots/folders_2020-11-18.PNG)
-![seasons](https://raw.githubusercontent.com/ArtskydJ/track-watched-tv-shows/master/screenshots/b99_seasons_2020-11-18.PNG)
-![episodes](https://raw.githubusercontent.com/ArtskydJ/track-watched-tv-shows/master/screenshots/b99_s05_2020-11-18.PNG)
+![](https://raw.githubusercontent.com/ArtskydJ/Remember-TV/master/screenshots/Capture_2022-01-29.PNG)
 
 ## Building
 
