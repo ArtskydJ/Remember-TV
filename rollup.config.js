@@ -1,23 +1,19 @@
 import svelte from 'rollup-plugin-svelte'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
+import copy from 'rollup-plugin-copy-assets'
 import css from 'rollup-plugin-css-only'
 
 export default {
-	input: 'src/index.js',
+	input: 'src/renderer/index.js',
 	output: {
-		file: 'public/bundle.js',
+		file: 'public/renderer-bundle.js',
 		name: 'app',
 		format: 'iife',
 	},
 	plugins: [
 		svelte({
-			// emitCss: false,
-			compilerOptions: {
-				// generate: 'ssr',
-				// hydratable: false,
-				// customElement: false,
-			},
+			compilerOptions: {},
 			onwarn: (warning, handler) => {
 				if (warning.code === 'a11y-positive-tabindex') {
 					return
@@ -25,9 +21,14 @@ export default {
 				handler(warning)
 			},
 		}),
-		css({ output: 'bundle.css' }),
+		css({ output: 'renderer-bundle.css' }),
 		resolve({ browser: true }),
 		commonjs(),
+		copy({
+			assets: [
+				'../public',
+			],
+		})
 	],
 	watch: {
 		clearScreen: false,
