@@ -36,7 +36,7 @@ module.exports = {
 		indent: [ 'warn', 'tab' ],
 		'key-spacing': [ 'warn' ],
 		'keyword-spacing': [ 'warn' ],
-		// 'linebreak-style': [ 'warn' ],
+		'linebreak-style': [ 'warn' ],
 		'no-debugger': [ 'warn' ],
 		'no-empty': [ 'warn' ],
 		'no-extra-label': [ 'warn' ],

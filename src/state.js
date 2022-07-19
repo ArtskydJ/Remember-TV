@@ -4,7 +4,7 @@ export default function nodeState(store, key) {
 	return {
 		get,
 		set,
-		save
+		save,
 		// setFromFileObj,
 	}
 

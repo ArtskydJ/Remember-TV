@@ -8,7 +8,7 @@ export default function readdir(absPath) {
 		name,
 		absPath,
 		parent: null,
-		prettyName: 'Remember TV'
+		prettyName: 'Remember TV',
 	}
 	return readsubdir(rootNode)
 }
@@ -21,7 +21,7 @@ function readsubdir(pnode) {
 		const cnode = {
 			name: dirent.name,
 			absPath: path.join(pnode.absPath, dirent.name),
-			parent: pnode
+			parent: pnode,
 		}
 		cnode.prettyName = prettyName(cnode)
 
@@ -43,7 +43,7 @@ function readsubdir(pnode) {
 
 function prettyName(cnode) {
 	// const parentFileNameRegex = new RegExp(`^((${getParents(cnode).map(pnode => pnode.name).join('|')}) ?)+`)
-	const fileExtRegex = new RegExp(`\\.(${[ ...videoExts ].join('|')})$`)
+	const fileExtRegex = new RegExp(`\\.(${ [ ...videoExts ].join('|') })$`)
 	return cnode.name
 		// .replace(parentFileNameRegex, '') // remove parent folder names
 		.replace(fileExtRegex, '') // remove file extension

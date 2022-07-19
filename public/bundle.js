@@ -467,66 +467,66 @@ var app = (function () {
     // Extracted from https://github.com/jshttp/mime-db/blob/master/db.json
 
     var videoExts = new Set([
-    	"3g2",
-    	"3gp",
-    	"3gpp",
-    	"asf",
-    	"asx",
-    	"avi",
-    	"dvb",
-    	"f4v",
-    	"fli",
-    	"flv",
-    	"fvt",
-    	"h261",
-    	"h263",
-    	"h264",
-    	"jpgm",
-    	"jpgv",
-    	"jpm",
-    	"m1v",
-    	"m2v",
-    	"m4u",
-    	"m4v",
-    	"mj2",
-    	"mjp2",
-    	"mk3d",
-    	"mks",
-    	"mkv",
-    	"mng",
-    	"mov",
-    	"movie",
-    	"mp4",
-    	"mp4v",
-    	"mpe",
-    	"mpeg",
-    	"mpg",
-    	"mpg4",
-    	"mxu",
-    	"ogv",
-    	"pyv",
-    	"qt",
-    	"smv",
-    	"ts",
-    	"uvh",
-    	"uvm",
-    	"uvp",
-    	"uvs",
-    	"uvu",
-    	"uvv",
-    	"uvvh",
-    	"uvvm",
-    	"uvvp",
-    	"uvvs",
-    	"uvvu",
-    	"uvvv",
-    	"viv",
-    	"vob",
-    	"webm",
-    	"wm",
-    	"wmv",
-    	"wmx",
-    	"wvx",
+    	'3g2',
+    	'3gp',
+    	'3gpp',
+    	'asf',
+    	'asx',
+    	'avi',
+    	'dvb',
+    	'f4v',
+    	'fli',
+    	'flv',
+    	'fvt',
+    	'h261',
+    	'h263',
+    	'h264',
+    	'jpgm',
+    	'jpgv',
+    	'jpm',
+    	'm1v',
+    	'm2v',
+    	'm4u',
+    	'm4v',
+    	'mj2',
+    	'mjp2',
+    	'mk3d',
+    	'mks',
+    	'mkv',
+    	'mng',
+    	'mov',
+    	'movie',
+    	'mp4',
+    	'mp4v',
+    	'mpe',
+    	'mpeg',
+    	'mpg',
+    	'mpg4',
+    	'mxu',
+    	'ogv',
+    	'pyv',
+    	'qt',
+    	'smv',
+    	'ts',
+    	'uvh',
+    	'uvm',
+    	'uvp',
+    	'uvs',
+    	'uvu',
+    	'uvv',
+    	'uvvh',
+    	'uvvm',
+    	'uvvp',
+    	'uvvs',
+    	'uvvu',
+    	'uvvv',
+    	'viv',
+    	'vob',
+    	'webm',
+    	'wm',
+    	'wmv',
+    	'wmx',
+    	'wvx',
     ]);
 
     const fs = require('fs');
@@ -538,7 +538,7 @@ var app = (function () {
     		name,
     		absPath,
     		parent: null,
-    		prettyName: 'Remember TV'
+    		prettyName: 'Remember TV',
     	};
     	return readsubdir(rootNode)
     }
@@ -551,7 +551,7 @@ var app = (function () {
     		const cnode = {
     			name: dirent.name,
     			absPath: path.join(pnode.absPath, dirent.name),
-    			parent: pnode
+    			parent: pnode,
     		};
     		cnode.prettyName = prettyName(cnode);
 
@@ -573,7 +573,7 @@ var app = (function () {
 
     function prettyName(cnode) {
     	// const parentFileNameRegex = new RegExp(`^((${getParents(cnode).map(pnode => pnode.name).join('|')}) ?)+`)
-    	const fileExtRegex = new RegExp(`\\.(${[ ...videoExts ].join('|')})$`);
+    	const fileExtRegex = new RegExp(`\\.(${ [ ...videoExts ].join('|') })$`);
     	return cnode.name
     		// .replace(parentFileNameRegex, '') // remove parent folder names
     		.replace(fileExtRegex, '') // remove file extension
@@ -598,7 +598,7 @@ var app = (function () {
     	return {
     		get,
     		set,
-    		save
+    		save,
     		// setFromFileObj,
     	}
 
@@ -2263,7 +2263,7 @@ var app = (function () {
 
     const app = new App({
     	target: document.body,
-    	props: {}
+    	props: {},
     });
 
     return app;
