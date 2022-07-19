@@ -949,32 +949,32 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[25] = list[i];
-    	child_ctx[27] = list;
-    	child_ctx[28] = i;
-    	const constants_0 = /*watchState*/ child_ctx[2].get(/*cnode*/ child_ctx[25]);
-    	child_ctx[26] = constants_0;
+    	child_ctx[23] = list[i];
+    	child_ctx[25] = list;
+    	child_ctx[26] = i;
+    	const constants_0 = /*watchState*/ child_ctx[2].get(/*cnode*/ child_ctx[23]);
+    	child_ctx[24] = constants_0;
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[29] = list[i];
-    	child_ctx[31] = i;
+    	child_ctx[27] = list[i];
+    	child_ctx[29] = i;
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[25] = list[i];
-    	child_ctx[35] = list;
-    	child_ctx[36] = i;
-    	const constants_0 = /*starState*/ child_ctx[3].get(/*cnode*/ child_ctx[25]);
-    	child_ctx[32] = constants_0;
-    	const constants_1 = /*getFolderProgress*/ child_ctx[9](/*cnode*/ child_ctx[25], /*watchState*/ child_ctx[2]);
-    	child_ctx[33] = constants_1;
-    	const constants_2 = /*progress*/ child_ctx[33].total === /*progress*/ child_ctx[33].watched;
-    	child_ctx[34] = constants_2;
+    	child_ctx[23] = list[i];
+    	child_ctx[33] = list;
+    	child_ctx[34] = i;
+    	const constants_0 = /*starState*/ child_ctx[3].get(/*cnode*/ child_ctx[23]);
+    	child_ctx[30] = constants_0;
+    	const constants_1 = /*getFolderProgress*/ child_ctx[9](/*cnode*/ child_ctx[23], /*watchState*/ child_ctx[2]);
+    	child_ctx[31] = constants_1;
+    	const constants_2 = /*progress*/ child_ctx[31].total === /*progress*/ child_ctx[31].watched;
+    	child_ctx[32] = constants_2;
     	return child_ctx;
     }
 
@@ -1002,7 +1002,7 @@ var app = (function () {
     		p(ctx, dirty) {
     			const row_changes = {};
 
-    			if (dirty[0] & /*absPath*/ 2 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*absPath*/ 2 | dirty[1] & /*$$scope*/ 16) {
     				row_changes.$$scope = { dirty, ctx };
     			}
 
@@ -1160,7 +1160,7 @@ var app = (function () {
     	});
 
     	let each_value = /*node*/ ctx[0].files;
-    	const get_key = ctx => /*cnode*/ ctx[25].absPath;
+    	const get_key = ctx => /*cnode*/ ctx[23].absPath;
 
     	for (let i = 0; i < each_value.length; i += 1) {
     		let child_ctx = get_each_context(ctx, each_value, i);
@@ -1347,7 +1347,7 @@ var app = (function () {
     		p(ctx, dirty) {
     			const row_changes = {};
 
-    			if (dirty[0] & /*node, absPath*/ 3 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*node, absPath*/ 3 | dirty[1] & /*$$scope*/ 16) {
     				row_changes.$$scope = { dirty, ctx };
     			}
 
@@ -1465,7 +1465,7 @@ var app = (function () {
 
     	return {
     		c() {
-    			t = text(/*sectionName*/ ctx[29]);
+    			t = text(/*sectionName*/ ctx[27]);
     		},
     		m(target, anchor) {
     			insert(target, t, anchor);
@@ -1500,7 +1500,7 @@ var app = (function () {
     		p(ctx, dirty) {
     			const row_changes = {};
 
-    			if (dirty[0] & /*node*/ 1 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*node*/ 1 | dirty[1] & /*$$scope*/ 16) {
     				row_changes.$$scope = { dirty, ctx };
     			}
 
@@ -1527,7 +1527,7 @@ var app = (function () {
     	let span0;
     	let t1;
     	let span1;
-    	let t2_value = /*cnode*/ ctx[25].prettyName + "";
+    	let t2_value = /*cnode*/ ctx[23].prettyName + "";
     	let t2;
     	let span1_title_value;
     	let t3;
@@ -1543,19 +1543,19 @@ var app = (function () {
     	let dispose;
 
     	function click_handler_1() {
-    		return /*click_handler_1*/ ctx[12](/*cnode*/ ctx[25]);
+    		return /*click_handler_1*/ ctx[12](/*cnode*/ ctx[23]);
     	}
 
     	folderprogress = new FolderProgress({
-    			props: { progress: /*progress*/ ctx[33] }
+    			props: { progress: /*progress*/ ctx[31] }
     		});
 
     	function click_handler_2() {
-    		return /*click_handler_2*/ ctx[13](/*cnode*/ ctx[25], /*watchedAll*/ ctx[34], /*each_value_2*/ ctx[35], /*cnode_index_1*/ ctx[36]);
+    		return /*click_handler_2*/ ctx[13](/*cnode*/ ctx[23], /*watchedAll*/ ctx[32], /*each_value_2*/ ctx[33], /*cnode_index_1*/ ctx[34]);
     	}
 
     	function click_handler_3() {
-    		return /*click_handler_3*/ ctx[14](/*cnode*/ ctx[25], /*each_value_2*/ ctx[35], /*cnode_index_1*/ ctx[36]);
+    		return /*click_handler_3*/ ctx[14](/*cnode*/ ctx[23], /*each_value_2*/ ctx[33], /*cnode_index_1*/ ctx[34]);
     	}
 
     	return {
@@ -1575,23 +1575,23 @@ var app = (function () {
     			button2 = element("button");
     			span3 = element("span");
     			attr(span0, "class", "icon svelte-1riw5vd");
-    			attr(span1, "title", span1_title_value = /*cnode*/ ctx[25].name);
+    			attr(span1, "title", span1_title_value = /*cnode*/ ctx[23].name);
     			attr(span1, "class", "svelte-1riw5vd");
-    			toggle_class(span1, "watched", /*watchedAll*/ ctx[34]);
+    			toggle_class(span1, "watched", /*watchedAll*/ ctx[32]);
     			attr(button0, "class", "subtle svelte-1riw5vd");
     			set_style(button0, "flex-shrink", "1");
     			set_style(button0, "white-space", "nowrap");
     			set_style(button0, "overflow", "hidden");
     			set_style(button0, "text-overflow", "ellipsis");
-    			toggle_class(button0, "watched", /*watchedAll*/ ctx[34]);
+    			toggle_class(button0, "watched", /*watchedAll*/ ctx[32]);
     			set_style(span2, "flex-grow", "1");
     			attr(span2, "class", "svelte-1riw5vd");
     			attr(button1, "class", "subtle svelte-1riw5vd");
-    			attr(button1, "tabindex", "1");
+    			attr(button1, "tabindex", tabIndexWatched);
     			attr(span3, "class", "star svelte-1riw5vd");
-    			toggle_class(span3, "starred", /*starred*/ ctx[32]);
+    			toggle_class(span3, "starred", /*starred*/ ctx[30]);
     			attr(button2, "class", "subtle svelte-1riw5vd");
-    			attr(button2, "tabindex", "2");
+    			attr(button2, "tabindex", tabIndexStar);
     		},
     		m(target, anchor) {
     			insert(target, button0, anchor);
@@ -1621,26 +1621,26 @@ var app = (function () {
     		},
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if ((!current || dirty[0] & /*node*/ 1) && t2_value !== (t2_value = /*cnode*/ ctx[25].prettyName + "")) set_data(t2, t2_value);
+    			if ((!current || dirty[0] & /*node*/ 1) && t2_value !== (t2_value = /*cnode*/ ctx[23].prettyName + "")) set_data(t2, t2_value);
 
-    			if (!current || dirty[0] & /*node*/ 1 && span1_title_value !== (span1_title_value = /*cnode*/ ctx[25].name)) {
+    			if (!current || dirty[0] & /*node*/ 1 && span1_title_value !== (span1_title_value = /*cnode*/ ctx[23].name)) {
     				attr(span1, "title", span1_title_value);
     			}
 
     			if (dirty[0] & /*getFolderProgress, node, watchState*/ 517) {
-    				toggle_class(span1, "watched", /*watchedAll*/ ctx[34]);
+    				toggle_class(span1, "watched", /*watchedAll*/ ctx[32]);
     			}
 
     			if (dirty[0] & /*getFolderProgress, node, watchState*/ 517) {
-    				toggle_class(button0, "watched", /*watchedAll*/ ctx[34]);
+    				toggle_class(button0, "watched", /*watchedAll*/ ctx[32]);
     			}
 
     			const folderprogress_changes = {};
-    			if (dirty[0] & /*node*/ 1) folderprogress_changes.progress = /*progress*/ ctx[33];
+    			if (dirty[0] & /*node*/ 1) folderprogress_changes.progress = /*progress*/ ctx[31];
     			folderprogress.$set(folderprogress_changes);
 
     			if (dirty[0] & /*starState, node*/ 9) {
-    				toggle_class(span3, "starred", /*starred*/ ctx[32]);
+    				toggle_class(span3, "starred", /*starred*/ ctx[30]);
     			}
     		},
     		i(local) {
@@ -1672,7 +1672,7 @@ var app = (function () {
     	let first;
     	let if_block_anchor;
     	let current;
-    	let if_block = /*progress*/ ctx[33].total !== 0 && (/*showAll*/ ctx[31] || /*starred*/ ctx[32]) && create_if_block_2(ctx);
+    	let if_block = /*progress*/ ctx[31].total !== 0 && (/*showAll*/ ctx[29] || /*starred*/ ctx[30]) && create_if_block_2(ctx);
 
     	return {
     		key: key_1,
@@ -1692,7 +1692,7 @@ var app = (function () {
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (/*progress*/ ctx[33].total !== 0 && (/*showAll*/ ctx[31] || /*starred*/ ctx[32])) {
+    			if (/*progress*/ ctx[31].total !== 0 && (/*showAll*/ ctx[29] || /*starred*/ ctx[30])) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
 
@@ -1742,7 +1742,7 @@ var app = (function () {
     	let current;
     	let if_block = show_if && create_if_block_3(ctx);
     	let each_value_2 = /*node*/ ctx[0].folders;
-    	const get_key = ctx => /*cnode*/ ctx[25].absPath;
+    	const get_key = ctx => /*cnode*/ ctx[23].absPath;
 
     	for (let i = 0; i < each_value_2.length; i += 1) {
     		let child_ctx = get_each_context_2(ctx, each_value_2, i);
@@ -1841,7 +1841,7 @@ var app = (function () {
     	let span0;
     	let t1;
     	let span1;
-    	let t2_value = /*cnode*/ ctx[25].prettyName + "";
+    	let t2_value = /*cnode*/ ctx[23].prettyName + "";
     	let t2;
     	let span1_title_value;
     	let button0_watched_value;
@@ -1855,11 +1855,11 @@ var app = (function () {
     	let dispose;
 
     	function click_handler_4() {
-    		return /*click_handler_4*/ ctx[15](/*cnode*/ ctx[25], /*each_value*/ ctx[27], /*cnode_index*/ ctx[28]);
+    		return /*click_handler_4*/ ctx[15](/*cnode*/ ctx[23], /*each_value*/ ctx[25], /*cnode_index*/ ctx[26]);
     	}
 
     	function click_handler_5() {
-    		return /*click_handler_5*/ ctx[16](/*cnode*/ ctx[25], /*each_value*/ ctx[27], /*cnode_index*/ ctx[28]);
+    		return /*click_handler_5*/ ctx[16](/*cnode*/ ctx[23], /*each_value*/ ctx[25], /*cnode_index*/ ctx[26]);
     	}
 
     	return {
@@ -1877,21 +1877,21 @@ var app = (function () {
     			span3 = element("span");
     			t5 = space();
     			attr(span0, "class", "icon svelte-1riw5vd");
-    			attr(span1, "title", span1_title_value = /*cnode*/ ctx[25].name);
+    			attr(span1, "title", span1_title_value = /*cnode*/ ctx[23].name);
     			attr(span1, "class", "svelte-1riw5vd");
     			attr(button0, "class", "subtle svelte-1riw5vd");
-    			attr(button0, "watched", button0_watched_value = /*watched*/ ctx[26]);
+    			attr(button0, "watched", button0_watched_value = /*watched*/ ctx[24]);
     			set_style(button0, "flex-shrink", "1");
     			set_style(button0, "white-space", "nowrap");
     			set_style(button0, "overflow", "hidden");
     			set_style(button0, "text-overflow", "ellipsis");
-    			toggle_class(button0, "watched", /*watched*/ ctx[26]);
+    			toggle_class(button0, "watched", /*watched*/ ctx[24]);
     			set_style(span2, "flex-grow", "1");
     			attr(span2, "class", "svelte-1riw5vd");
     			attr(span3, "class", "file progress svelte-1riw5vd");
-    			toggle_class(span3, "watched", /*watched*/ ctx[26]);
+    			toggle_class(span3, "watched", /*watched*/ ctx[24]);
     			attr(button1, "class", "subtle svelte-1riw5vd");
-    			attr(button1, "tabindex", "2");
+    			attr(button1, "tabindex", tabIndexWatched);
     		},
     		m(target, anchor) {
     			insert(target, button0, anchor);
@@ -1917,22 +1917,22 @@ var app = (function () {
     		},
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty[0] & /*node*/ 1 && t2_value !== (t2_value = /*cnode*/ ctx[25].prettyName + "")) set_data(t2, t2_value);
+    			if (dirty[0] & /*node*/ 1 && t2_value !== (t2_value = /*cnode*/ ctx[23].prettyName + "")) set_data(t2, t2_value);
 
-    			if (dirty[0] & /*node*/ 1 && span1_title_value !== (span1_title_value = /*cnode*/ ctx[25].name)) {
+    			if (dirty[0] & /*node*/ 1 && span1_title_value !== (span1_title_value = /*cnode*/ ctx[23].name)) {
     				attr(span1, "title", span1_title_value);
     			}
 
-    			if (dirty[0] & /*node*/ 1 && button0_watched_value !== (button0_watched_value = /*watched*/ ctx[26])) {
+    			if (dirty[0] & /*node*/ 1 && button0_watched_value !== (button0_watched_value = /*watched*/ ctx[24])) {
     				attr(button0, "watched", button0_watched_value);
     			}
 
     			if (dirty[0] & /*watchState, node*/ 5) {
-    				toggle_class(button0, "watched", /*watched*/ ctx[26]);
+    				toggle_class(button0, "watched", /*watched*/ ctx[24]);
     			}
 
     			if (dirty[0] & /*watchState, node*/ 5) {
-    				toggle_class(span3, "watched", /*watched*/ ctx[26]);
+    				toggle_class(span3, "watched", /*watched*/ ctx[24]);
     			}
     		},
     		d(detaching) {
@@ -1978,7 +1978,7 @@ var app = (function () {
     			ctx = new_ctx;
     			const row_changes = {};
 
-    			if (dirty[0] & /*node*/ 1 | dirty[1] & /*$$scope*/ 64) {
+    			if (dirty[0] & /*node*/ 1 | dirty[1] & /*$$scope*/ 16) {
     				row_changes.$$scope = { dirty, ctx };
     			}
 
@@ -2089,6 +2089,9 @@ var app = (function () {
     	};
     }
 
+    const tabIndexWatched = 1;
+    const tabIndexStar = 2;
+
     function getCwdNode(cwd, pnode) {
     	const closerNode = pnode.folders.find(folder => cwd.startsWith(folder.absPath));
     	return closerNode ? getCwdNode(cwd, closerNode) : pnode;
@@ -2109,15 +2112,17 @@ var app = (function () {
 
     	let node;
     	const watchState = nodeState(store, 'stateObj');
-    	nodeState(store, 'scroll');
+
+    	// const scrollState = State(store, 'scroll')
     	const starState = nodeState(store, 'star');
+
     	load();
 
     	function load() {
     		$$invalidate(1, absPath = store.get('absPath'));
 
     		if (absPath) {
-    			let rootNode = readdir(absPath);
+    			const rootNode = readdir(absPath);
     			const cwd = store.get('cwd');
     			$$invalidate(0, node = cwd ? getCwdNode(cwd, rootNode) : rootNode);
     		}
@@ -2136,7 +2141,7 @@ var app = (function () {
     	function loadNode(pnode) {
     		store.set('cwd', pnode.absPath);
 
-    		// window.scrollTo(0, scrollwatchState.get(pnode))
+    		// window.scrollTo(0, scrollState.get(pnode))
     		watchState.save();
     	}
 
@@ -2166,6 +2171,20 @@ var app = (function () {
     		}
     	}
 
+    	// function prettyPath(pnode) {
+    	// 	return getAncestry(pnode)
+    	// 		.map(node => node.prettyName)
+    	// 		.reverse()
+    	// 		.join(' | ') // en dash –
+    	// }
+    	// function getAncestry(cnode) {
+    	// 	const parents = []
+    	// 	while (cnode) {
+    	// 		parents.unshift(cnode)
+    	// 		cnode = cnode.parent
+    	// 	}
+    	// 	return parents
+    	// }
     	const getFolderProgress = (node, watchState) => {
     		const folderHasFiles = node => node.folders.some(folderHasFiles) || node.files.length;
     		const folderIsFullyWatched = (node, watchState) => node.folders.every(folder => folderIsFullyWatched(folder, watchState)) && node.files.every(file => Number(watchState.get(file)));

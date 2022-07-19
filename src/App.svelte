@@ -5,7 +5,6 @@
 	import readdir from './readdir.js'
 	import State from './state.js'
 	import Row from './Row.svelte'
-	import Clickable from './Clickable.svelte'
 	import FolderProgress from './FolderProgress.svelte'
 
 	const store = new Store()
@@ -15,7 +14,7 @@
 	let node
 
 	const watchState = State(store, 'stateObj')
-	const scrollState = State(store, 'scroll')
+	// const scrollState = State(store, 'scroll')
 	const starState = State(store, 'star')
 
 	load()
@@ -23,7 +22,7 @@
 	function load() {
 		absPath = store.get('absPath')
 		if (absPath) {
-			let rootNode = readdir(absPath)
+			const rootNode = readdir(absPath)
 			const cwd = store.get('cwd')
 			node = cwd ? getCwdNode(cwd, rootNode) : rootNode
 		}
@@ -48,7 +47,7 @@
 
 	function loadNode(pnode) {
 		store.set('cwd', pnode.absPath)
-		// window.scrollTo(0, scrollwatchState.get(pnode))
+		// window.scrollTo(0, scrollState.get(pnode))
 		watchState.save()
 	}
 
@@ -72,7 +71,7 @@
 
 
 	function confirmSetAllWatched(cnode, watchedAll) {
-		const message = `Mark all video files as ${watchedAll ? 'un' : ''}watched?`
+		const message = `Mark all video files as ${ watchedAll ? 'un' : '' }watched?`
 		if (confirm(message)) {
 			setChildrenWatched(watchState, cnode, !watchedAll)
 			watchState.save()
@@ -82,23 +81,21 @@
 		node.folders.forEach(cnode => setChildrenWatched(watchState, cnode, newIsWatched))
 		node.files.forEach(cnode => watchState.set(cnode, newIsWatched))
 	}
-	function prettyPath(pnode) {
-		return getAncestry(pnode)
-			.map(node => node.prettyName)
-			.reverse()
-			.join(' | ') // en dash –
-	}
-	function getAncestry(cnode) {
-		const parents = []
-		while (cnode) {
-			parents.unshift(cnode)
-			cnode = cnode.parent
-		}
-		return parents
-	}
+	// function prettyPath(pnode) {
+	// 	return getAncestry(pnode)
+	// 		.map(node => node.prettyName)
+	// 		.reverse()
+	// 		.join(' | ') // en dash –
+	// }
+	// function getAncestry(cnode) {
+	// 	const parents = []
+	// 	while (cnode) {
+	// 		parents.unshift(cnode)
+	// 		cnode = cnode.parent
+	// 	}
+	// 	return parents
+	// }
 
-
-	const sum = arr => arr.reduce((a, b) => a + b, 0)
 
 	const getFolderProgress = (node, watchState) => {
 		const folderHasFiles = node => node.folders.some(folderHasFiles) || node.files.length
@@ -130,6 +127,9 @@
 	// 	console.log(ev)
 	// 	console.log(`window.scrollY`, window.scrollY)
 	// })
+
+	const tabIndexWatched = 1
+	const tabIndexStar = 2
 </script>
 
 <div id="scroll-container">
@@ -176,10 +176,10 @@
 									<span title="{cnode.name}" class:watched={watchedAll}>{cnode.prettyName}</span>
 								</button>
 								<span style="flex-grow: 1;"></span>
-								<button class="subtle" tabindex="1" on:click={() => {confirmSetAllWatched(cnode, watchedAll); cnode = cnode}}>
+								<button class="subtle" tabindex={tabIndexWatched} on:click={() => {confirmSetAllWatched(cnode, watchedAll); cnode = cnode}}>
 									<FolderProgress {progress} />
 								</button>
-								<button class="subtle" tabindex="2" on:click={() => {toggleStar(cnode); cnode = cnode}}>
+								<button class="subtle" tabindex={tabIndexStar} on:click={() => {toggleStar(cnode); cnode = cnode}}>
 									<span class="star" class:starred={starred}></span>
 								</button>
 							</Row>
@@ -196,7 +196,7 @@
 							<span title="{cnode.name}">{cnode.prettyName}</span>
 						</button>
 						<span style="flex-grow: 1;"></span>
-						<button class="subtle" tabindex="2" on:click={() => { setWatched(cnode, !watchState.get(cnode)); cnode = cnode }}>
+						<button class="subtle" tabindex={tabIndexWatched} on:click={() => { setWatched(cnode, ! watchState.get(cnode)); cnode = cnode }}>
 							<span class="file progress" class:watched={watched}></span>
 						</button>
 					</Row>

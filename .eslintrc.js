@@ -12,9 +12,13 @@ module.exports = {
 	},
 	plugins: [ 'svelte3' ],
 	overrides: [{
-		files: [ '*.svelte' ],
-		processor: 'svelte3/svelte3'
+		files: [ '**/*.svelte' ],
+		processor: 'svelte3/svelte3',
 	}],
+	settings: {
+		'svelte3/ignore-warnings': warning =>
+			warning.code === 'a11y-positive-tabindex', // this doesn't seem to be working
+	},
 	rules: {
 		'arrow-body-style': [ 'error', 'as-needed' ],
 		'arrow-parens': [ 'error', 'as-needed' ],
@@ -32,7 +36,7 @@ module.exports = {
 		indent: [ 'warn', 'tab' ],
 		'key-spacing': [ 'warn' ],
 		'keyword-spacing': [ 'warn' ],
-		'linebreak-style': [ 'warn', 'windows' ],
+		// 'linebreak-style': [ 'warn' ],
 		'no-debugger': [ 'warn' ],
 		'no-empty': [ 'warn' ],
 		'no-extra-label': [ 'warn' ],
@@ -67,7 +71,7 @@ module.exports = {
 		'space-before-function-paren': [ 'warn', 'never' ],
 		'space-in-parens': [ 'warn', 'never' ],
 		'space-infix-ops': [ 'warn' ],
-		'space-unary-ops': [ 'error', { words: true, nonwords: true }],
+		// 'space-unary-ops': [ 'warn', { words: true, nonwords: true }],
 		'spaced-comment': [ 'warn', 'always' ],
 		'template-curly-spacing': [ 'warn', 'always' ], // someday this will be ok, but as of eslint-v7.0.0-rc.0 doesn't play nice with dynamic imports
 		'template-tag-spacing': [ 'warn' ],
