@@ -1040,8 +1040,8 @@ var app = (function () {
     			t1 = space();
     			span = element("span");
     			t2 = text(t2_value);
-    			attr(button, "class", "big svelte-1riw5vd");
-    			attr(span, "class", "svelte-1riw5vd");
+    			attr(button, "class", "big svelte-qiqcxt");
+    			attr(span, "class", "svelte-qiqcxt");
     		},
     		m(target, anchor) {
     			insert(target, button, anchor);
@@ -1089,7 +1089,7 @@ var app = (function () {
     			div = element("div");
     			if_block.c();
     			attr(div, "id", "list");
-    			attr(div, "class", "svelte-1riw5vd");
+    			attr(div, "class", "svelte-qiqcxt");
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);
@@ -1383,9 +1383,9 @@ var app = (function () {
     			button.textContent = "🡹 Parent Folder";
     			t1 = space();
     			span = element("span");
-    			attr(button, "class", "big svelte-1riw5vd");
+    			attr(button, "class", "big svelte-qiqcxt");
     			set_style(span, "white-space", "wrap");
-    			attr(span, "class", "svelte-1riw5vd");
+    			attr(span, "class", "svelte-qiqcxt");
     		},
     		m(target, anchor) {
     			insert(target, button, anchor);
@@ -1432,9 +1432,9 @@ var app = (function () {
     			create_component(row.$$.fragment);
     			t = space();
     			hr = element("hr");
-    			attr(hr, "class", "svelte-1riw5vd");
+    			attr(hr, "class", "svelte-qiqcxt");
     			set_style(div, "margin", "1em 0 0.5em");
-    			attr(div, "class", "svelte-1riw5vd");
+    			attr(div, "class", "svelte-qiqcxt");
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);
@@ -1574,23 +1574,23 @@ var app = (function () {
     			t5 = space();
     			button2 = element("button");
     			span3 = element("span");
-    			attr(span0, "class", "icon svelte-1riw5vd");
+    			attr(span0, "class", "icon svelte-qiqcxt");
     			attr(span1, "title", span1_title_value = /*cnode*/ ctx[23].name);
-    			attr(span1, "class", "svelte-1riw5vd");
+    			attr(span1, "class", "svelte-qiqcxt");
     			toggle_class(span1, "watched", /*watchedAll*/ ctx[32]);
-    			attr(button0, "class", "subtle svelte-1riw5vd");
+    			attr(button0, "class", "subtle svelte-qiqcxt");
     			set_style(button0, "flex-shrink", "1");
     			set_style(button0, "white-space", "nowrap");
     			set_style(button0, "overflow", "hidden");
     			set_style(button0, "text-overflow", "ellipsis");
     			toggle_class(button0, "watched", /*watchedAll*/ ctx[32]);
     			set_style(span2, "flex-grow", "1");
-    			attr(span2, "class", "svelte-1riw5vd");
-    			attr(button1, "class", "subtle svelte-1riw5vd");
+    			attr(span2, "class", "svelte-qiqcxt");
+    			attr(button1, "class", "subtle svelte-qiqcxt");
     			attr(button1, "tabindex", tabIndexWatched);
-    			attr(span3, "class", "star svelte-1riw5vd");
+    			attr(span3, "class", "star svelte-qiqcxt");
     			toggle_class(span3, "starred", /*starred*/ ctx[30]);
-    			attr(button2, "class", "subtle svelte-1riw5vd");
+    			attr(button2, "class", "subtle svelte-qiqcxt");
     			attr(button2, "tabindex", tabIndexStar);
     		},
     		m(target, anchor) {
@@ -1876,10 +1876,10 @@ var app = (function () {
     			button1 = element("button");
     			span3 = element("span");
     			t5 = space();
-    			attr(span0, "class", "icon svelte-1riw5vd");
+    			attr(span0, "class", "icon svelte-qiqcxt");
     			attr(span1, "title", span1_title_value = /*cnode*/ ctx[23].name);
-    			attr(span1, "class", "svelte-1riw5vd");
-    			attr(button0, "class", "subtle svelte-1riw5vd");
+    			attr(span1, "class", "svelte-qiqcxt");
+    			attr(button0, "class", "subtle svelte-qiqcxt");
     			attr(button0, "watched", button0_watched_value = /*watched*/ ctx[24]);
     			set_style(button0, "flex-shrink", "1");
     			set_style(button0, "white-space", "nowrap");
@@ -1887,10 +1887,10 @@ var app = (function () {
     			set_style(button0, "text-overflow", "ellipsis");
     			toggle_class(button0, "watched", /*watched*/ ctx[24]);
     			set_style(span2, "flex-grow", "1");
-    			attr(span2, "class", "svelte-1riw5vd");
-    			attr(span3, "class", "file progress svelte-1riw5vd");
+    			attr(span2, "class", "svelte-qiqcxt");
+    			attr(span3, "class", "file progress svelte-qiqcxt");
     			toggle_class(span3, "watched", /*watched*/ ctx[24]);
-    			attr(button1, "class", "subtle svelte-1riw5vd");
+    			attr(button1, "class", "subtle svelte-qiqcxt");
     			attr(button1, "tabindex", tabIndexWatched);
     		},
     		m(target, anchor) {
@@ -2014,7 +2014,7 @@ var app = (function () {
     			t = space();
     			if (if_block1) if_block1.c();
     			attr(div, "id", "scroll-container");
-    			attr(div, "class", "svelte-1riw5vd");
+    			attr(div, "class", "svelte-qiqcxt");
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);

@@ -264,7 +264,7 @@
 		padding: 0.5em 1em;
 		background-color: var(--color-btn-bg);
 		color: var(--color-btn-text);
-		font-weight: bold;
+		font-weight: normal;
 		white-space: nowrap;
 	}
 	button:hover {
