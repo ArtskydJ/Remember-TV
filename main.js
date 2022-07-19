@@ -34,6 +34,7 @@ function createWindow() {
 			devTools: isDev,
 			enableRemoteModule: true,
 			nodeIntegration: true,
+			contextIsolation: false,
 		},
 		icon: './icon/icon.png',
 	})
