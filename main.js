@@ -3,6 +3,8 @@ const { app, BrowserWindow, dialog, ipcMain, Menu } = require('electron')
 const windowStateKeeper = require('electron-window-state')
 const isDev = require('electron-is-dev')
 
+require('electron-store').initRenderer()
+
 if (isDev) {
 	require('electron-reloader')(module)
 }
