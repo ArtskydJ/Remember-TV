@@ -251,6 +251,9 @@ var app = (function () {
             });
             block.o(local);
         }
+        else if (callback) {
+            callback();
+        }
     }
     function outro_and_destroy_block(block, lookup) {
         transition_out(block, 1, 1, () => {
@@ -975,7 +978,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (137:1) {#if !node || !node.parent}
+    // (136:1) {#if !node || !node.parent}
     function create_if_block_5(ctx) {
     	let row;
     	let current;
@@ -1020,7 +1023,7 @@ var app = (function () {
     	};
     }
 
-    // (138:2) <Row style="margin:1em;">
+    // (137:2) <Row style="margin:1em;">
     function create_default_slot_4(ctx) {
     	let button;
     	let t1;
@@ -1064,7 +1067,7 @@ var app = (function () {
     	};
     }
 
-    // (145:1) {#if absPath}
+    // (144:1) {#if absPath}
     function create_if_block(ctx) {
     	let div;
     	let current_block_type_index;
@@ -1136,7 +1139,7 @@ var app = (function () {
     	};
     }
 
-    // (149:3) {:else}
+    // (148:3) {:else}
     function create_else_block(ctx) {
     	let t0;
     	let t1;
@@ -1300,7 +1303,7 @@ var app = (function () {
     	};
     }
 
-    // (147:3) {#if !node}
+    // (146:3) {#if !node}
     function create_if_block_1(ctx) {
     	let t;
 
@@ -1320,7 +1323,7 @@ var app = (function () {
     	};
     }
 
-    // (150:4) {#if node.parent}
+    // (149:4) {#if node.parent}
     function create_if_block_4(ctx) {
     	let row;
     	let current;
@@ -1365,7 +1368,7 @@ var app = (function () {
     	};
     }
 
-    // (151:5) <Row style="margin:1em;">
+    // (150:5) <Row style="margin:1em;">
     function create_default_slot_3(ctx) {
     	let button;
     	let t1;
@@ -1407,7 +1410,7 @@ var app = (function () {
     	};
     }
 
-    // (160:5) {#if node.folders.some(cnode => starState.get(cnode))}
+    // (159:5) {#if node.folders.some(cnode => starState.get(cnode))}
     function create_if_block_3(ctx) {
     	let div;
     	let row;
@@ -1456,7 +1459,7 @@ var app = (function () {
     	};
     }
 
-    // (162:7) <Row style="justify-content: center;">
+    // (161:7) <Row style="justify-content: center;">
     function create_default_slot_2(ctx) {
     	let t;
 
@@ -1474,7 +1477,7 @@ var app = (function () {
     	};
     }
 
-    // (173:6) {#if progress.total !== 0 && (showAll || starred)}
+    // (172:6) {#if progress.total !== 0 && (showAll || starred)}
     function create_if_block_2(ctx) {
     	let row;
     	let current;
@@ -1518,7 +1521,7 @@ var app = (function () {
     	};
     }
 
-    // (174:7) <Row>
+    // (173:7) <Row>
     function create_default_slot_1(ctx) {
     	let button0;
     	let span0;
@@ -1664,7 +1667,7 @@ var app = (function () {
     	};
     }
 
-    // (168:5) {#each node.folders as cnode (cnode.absPath)}
+    // (167:5) {#each node.folders as cnode (cnode.absPath)}
     function create_each_block_2(key_1, ctx) {
     	let first;
     	let if_block_anchor;
@@ -1729,7 +1732,7 @@ var app = (function () {
     	};
     }
 
-    // (159:4) {#each [ 'Starred', 'All' ] as sectionName, showAll}
+    // (158:4) {#each [ 'Starred', 'All' ] as sectionName, showAll}
     function create_each_block_1(ctx) {
     	let show_if = /*node*/ ctx[0].folders.some(/*func*/ ctx[10]);
     	let t;
@@ -1832,7 +1835,7 @@ var app = (function () {
     	};
     }
 
-    // (194:5) <Row>
+    // (193:5) <Row>
     function create_default_slot(ctx) {
     	let button0;
     	let span0;
@@ -1945,7 +1948,7 @@ var app = (function () {
     	};
     }
 
-    // (192:4) {#each node.files as cnode (cnode.absPath)}
+    // (191:4) {#each node.files as cnode (cnode.absPath)}
     function create_each_block(key_1, ctx) {
     	let first;
     	let row;
@@ -2097,7 +2100,7 @@ var app = (function () {
     }
 
     function instance($$self, $$props, $$invalidate) {
-    	const electron = require('electron');
+    	const { shell, ipcRenderer } = require('electron');
     	const Store = require('electron-store');
     	const store = new Store();
 
@@ -2120,14 +2123,12 @@ var app = (function () {
     		}
     	}
 
-    	const mainProcess = electron.remote.require('./main');
+    	const browse_button_click = async () => {
+    		const directory = await ipcRenderer.invoke('selectDirectory');
 
-    	const browse_button_click = () => {
-    		var selectResults = mainProcess.selectDirectory();
-
-    		if (selectResults.length) {
-    			store.set('absPath', selectResults[0]);
-    			store.set('cwd', selectResults[0]);
+    		if (directory) {
+    			store.set('absPath', directory);
+    			store.set('cwd', directory);
     			load();
     		}
     	};
@@ -2141,7 +2142,7 @@ var app = (function () {
 
     	function openFile(cnode) {
     		setWatched(cnode, true);
-    		electron.shell.openPath(cnode.absPath).then(e => e && alert(e.message));
+    		shell.openPath(cnode.absPath).then(e => e && alert(e.message));
     	}
 
     	function setWatched(cnode, newIsWatched) {

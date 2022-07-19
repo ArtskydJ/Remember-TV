@@ -1,5 +1,5 @@
 <script>
-	const electron = require('electron')
+	const { shell, ipcRenderer } = require('electron')
 	const Store = require('electron-store')
 
 	import readdir from './readdir.js'
@@ -30,12 +30,11 @@
 	}
 
 
-	const mainProcess = electron.remote.require('./main')
-	const browse_button_click = () => {
-		var selectResults = mainProcess.selectDirectory()
-		if (selectResults.length) {
-			store.set('absPath', selectResults[0])
-			store.set('cwd', selectResults[0])
+	const browse_button_click = async() => {
+		const directory = await ipcRenderer.invoke('selectDirectory')
+		if (directory) {
+			store.set('absPath', directory)
+			store.set('cwd', directory)
 			load()
 		}
 	}
@@ -55,7 +54,7 @@
 
 	function openFile(cnode) {
 		setWatched(cnode, true)
-		electron.shell.openPath(cnode.absPath)
+		shell.openPath(cnode.absPath)
 			.then(e => e && alert(e.message))
 	}
 
