@@ -6,10 +6,11 @@
   "main": "main.js",
   "private": true,
   "scripts": {
-    "bundle": "rollup --config rollup.config.mjs",
-    "watch": "rollup --config rollup.config.mjs --watch",
+    "bundle": "rollup --config rollup.config.js",
+    "watch": "rollup --config rollup.config.js --watch",
     "start": "electron .",
     "build": "npm run package && npm run zip-all",
+    "lint": "eslint --config .eslintrc.js --ignore-pattern dist/** --ignore-pattern node_modules/** --ignore-pattern public/** *.js",
     "package": "electron-packager ./ --overwrite --out=./dist --platform=darwin,linux,win32 --arch=x64 --icon=icon/icon2tv",
     "zip-linux": "tar -acf dist/Remember-TV-linux-x64.zip \"dist/Remember TV-linux-x64\"",
     "zip-macos": "tar -acf dist/Remember-TV-macos-x64.zip \"dist/Remember TV-darwin-x64\"",
@@ -25,6 +26,7 @@
     "electron": "^11.5.0",
     "electron-packager": "^15.1.0",
     "electron-reloader": "^1.0.1",
+    "eslint": "^8.20.0",
     "rollup": "^2.66.0",
     "rollup-plugin-css-only": "^3.1.0",
     "svelte": "^3.49.0"

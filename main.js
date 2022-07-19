@@ -35,7 +35,7 @@ function createWindow() {
 			enableRemoteModule: true,
 			nodeIntegration: true,
 		},
-		icon: './icon/icon.png'
+		icon: './icon/icon.png',
 	})
 
 	mainWindowSize.manage(mainWindow)
@@ -90,6 +90,6 @@ app.on('activate', () => {
 
 exports.selectDirectory = function() {
 	return dialog.showOpenDialog(mainWindow, {
-		properties: [ 'openDirectory' ]
+		properties: [ 'openDirectory' ],
 	})
 }
