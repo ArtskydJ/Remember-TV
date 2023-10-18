@@ -1,5 +1,11 @@
 # Remember TV
 
+An electron app to track which episodes you've watched, which are in progress.
+
+I've stopped using this in favor of services like Plex.
+
+## Usage
+
 Open up a directory of video files on your computer, and track which you have watched
 
 ![](https://raw.githubusercontent.com/ArtskydJ/Remember-TV/master/screenshots/Capture_2022-01-29.PNG)
